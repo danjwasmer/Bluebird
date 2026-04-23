@@ -1,2027 +1,1747 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Bluebird Sales Coach - Conversations That Convert</title>
+<link rel="icon" type="image/png" href="/logo.png">
 
-<link rel="icon" type="image/png" href="/logo.png"> 
- 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-
     --bg: #edf4ff;
-
     --surface: #f7faff;
-
     --surface2: #e7f0ff;
-
     --border: #c9d9f2;
-
     --text: #132a4a;
-
     --text-soft: #27456d;
-
     --muted: #5c769b;
-
     --accent: #3d7be0;
-
     --accent-dim: #245db8;
-
     --accent-soft: rgba(61,123,224,0.12);
-
     --blue-deep: #163d73;
-
     --blue-mid: #5f91e6;
-
     --blue-soft: #89b0f4;
-
     --ice: #dbe9ff;
-
     --success: #2b8a6e;
-
     --warn: #c97a32;
-
     --shadow: 0 6px 28px rgba(19,42,74,0.10), 0 2px 8px rgba(19,42,74,0.07);
-
     --shadow-sm: 0 2px 10px rgba(19,42,74,0.08), 0 1px 3px rgba(19,42,74,0.05);
-
   }
 
   html, body {
-
     height: 100%;
-
     background: var(--bg);
-
     color: var(--text);
-
     font-family: 'Cormorant Garamond', Georgia, serif;
-
     font-size: 18px;
-
     line-height: 1.7;
-
   }
 
   body {
-
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     min-height: 100vh;
-
     background-image:
-
       radial-gradient(ellipse at 50% 0%, rgba(61,123,224,0.08) 0%, transparent 55%),
-
       radial-gradient(ellipse at 85% 80%, rgba(95,145,230,0.08) 0%, transparent 50%);
-
   }
 
- 
-
   .page { display: none; width: 100%; flex-direction: column; align-items: center; }
-
   .page.active { display: flex; }
 
- 
-
   .loading-screen {
-
-    display: flex; flex-direction: column; align-items: center;
-
-    justify-content: center; min-height: 100vh; gap: 16px;
-
-    color: var(--muted); font-family: 'Jost', sans-serif;
-
-    font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 16px;
+    color: var(--muted);
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
   }
 
   .spinner {
-
-    width: 32px; height: 32px;
-
-    border: 1px solid var(--border); border-top-color: var(--accent);
-
-    border-radius: 50%; animation: spin 1s linear infinite;
-
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
- 
-
   .global-nav {
-
-    width: 100%; max-width: 720px;
-
+    width: 100%;
+    max-width: 720px;
     padding: 16px 28px 0;
-
-    display: flex; justify-content: space-between; align-items: center; gap: 10px;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
   .global-nav-left, .global-nav-right { display: flex; align-items: center; gap: 8px; }
 
   .nav-logo-wrap {
-
-    background: var(--surface); border-radius: 10px;
-
-    padding: 8px 12px; display: inline-flex;
-
-    align-items: center; cursor: pointer; border: 1px solid var(--border);
-
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
-
   }
 
   .nav-logo-mark {
-
-    font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500;
-
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-dim);
-
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
   }
 
   .nav-btn {
-
-    font-family: 'Jost', sans-serif; font-size: 13px;
-
-    font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
-
-    color: var(--text-soft); background: var(--surface);
-
-    border: 1px solid var(--border); padding: 7px 14px;
-
-    border-radius: 6px; cursor: pointer; transition: all 0.2s;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
     box-shadow: var(--shadow-sm);
-
   }
 
   .nav-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
 
   .nav-greeting {
-
-    font-family: 'Jost', sans-serif; font-size: 15px;
-
-    font-weight: 300; color: var(--muted); font-style: italic;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
   }
 
- 
-
   .logo-wrap {
-
     background: linear-gradient(180deg, #ffffff, var(--surface));
-
-    border-radius: 16px; padding: 18px 22px; display: inline-flex;
-
-    align-items: center; justify-content: center; margin-bottom: 20px;
-
-    border: 1px solid var(--border); box-shadow: var(--shadow);
-
+    border-radius: 16px;
+    padding: 18px 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
   }
 
   .logo-text {
-
-    font-family: 'Jost', sans-serif; font-weight: 500; font-size: 22px;
-
-    letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent-dim);
-
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
   }
 
- 
-
   .hero {
-
-    width: 100%; max-width: 720px;
-
+    width: 100%;
+    max-width: 720px;
     padding: 24px 28px 36px;
-
-    display: flex; flex-direction: column;
-
-    align-items: center; text-align: center;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .hero-title {
-
-    font-size: clamp(34px, 6vw, 52px); font-weight: 300;
-
-    font-style: italic; line-height: 1.15; color: var(--text); margin-bottom: 18px;
-
+    font-size: clamp(34px, 6vw, 52px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 18px;
   }
 
   .hero-sub {
-
-    font-family: 'Jost', sans-serif; font-weight: 400;
-
-    font-size: 15px; color: var(--text-soft);
-
-    letter-spacing: 0.08em; margin-bottom: 40px; text-transform: uppercase;
-
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--text-soft);
+    letter-spacing: 0.08em;
+    margin-bottom: 40px;
+    text-transform: uppercase;
   }
 
   .hero-copy {
-
-    max-width: 620px; font-family: 'Jost', sans-serif; font-size: 16px;
-
-    font-weight: 300; line-height: 1.8; color: var(--text-soft); margin-bottom: 28px;
-
+    max-width: 620px;
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-soft);
+    margin-bottom: 28px;
   }
 
- 
-
   .trust-strip {
-
-    display: flex; border: 1px solid var(--border);
-
-    border-radius: 10px; overflow: hidden;
-
-    width: 100%; max-width: 520px; margin-bottom: 0;
-
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 0;
     box-shadow: var(--shadow-sm);
-
   }
 
   .trust-item {
-
-    flex: 1; display: flex; flex-direction: column;
-
-    align-items: center; gap: 8px; padding: 18px 8px;
-
-    background: var(--surface); border-right: 1px solid var(--border);
-
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 8px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
   }
 
   .trust-item:last-child { border-right: none; }
 
-  .trust-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
-
-  .trust-label {
-
-    font-family: 'Jost', sans-serif; font-size: 13px;
-
-    font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-
-    color: var(--text-soft); text-align: center;
-
+  .trust-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
- 
+  .trust-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    text-align: center;
+  }
 
   .how-it-works {
-
-    width: 100%; max-width: 720px;
-
-    padding: 48px 28px 32px; display: grid;
-
-    grid-template-columns: repeat(4, 1fr); gap: 14px;
-
+    width: 100%;
+    max-width: 720px;
+    padding: 48px 28px 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
   }
 
   .step {
-
-    background: var(--surface); border: 1px solid var(--border);
-
-    border-radius: 10px; padding: 20px 16px; box-shadow: var(--shadow-sm);
-
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    box-shadow: var(--shadow-sm);
   }
 
-  .step-number { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.2em; color: var(--accent-dim); margin-bottom: 8px; }
+  .step-number {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    margin-bottom: 8px;
+  }
 
-  .step-title { font-size: 18px; font-weight: 500; color: var(--text); line-height: 1.3; margin-bottom: 8px; }
+  .step-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
 
-  .step-desc { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; color: var(--text-soft); line-height: 1.6; }
-
- 
+  .step-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
 
   .login-section {
-
-    width: 100%; max-width: 720px;
-
+    width: 100%;
+    max-width: 720px;
     padding: 0 28px 56px;
-
-    display: flex; flex-direction: column; align-items: center;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .login-card {
-
     width: 100%;
-
-    background: var(--surface); border: 1px solid var(--border);
-
-    border-radius: 12px; padding: 36px 32px; box-shadow: var(--shadow);
-
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
   }
 
   .auth-toggle {
-
-    display: flex; border: 1px solid var(--border);
-
-    border-radius: 8px; overflow: hidden; margin-bottom: 28px; background: var(--bg);
-
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    background: var(--bg);
   }
 
   .auth-toggle-btn {
-
-    flex: 1; font-family: 'Jost', sans-serif; font-size: 14px;
-
-    font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
-
-    padding: 11px 8px; border: none; background: transparent;
-
-    cursor: pointer; color: var(--muted); transition: all 0.2s;
-
+    flex: 1;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 11px 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.2s;
   }
 
   .auth-toggle-btn.active { background: var(--accent-dim); color: #fff; }
-
   .auth-toggle-btn:not(.active):hover { color: var(--accent); }
 
-  .pw-tabs { display: flex; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .pw-tabs {
+    display: flex;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
 
   .pw-tab {
-
-    font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 400;
-
-    letter-spacing: 0.1em; text-transform: uppercase;
-
-    padding: 8px 20px 12px; border: none; background: transparent;
-
-    cursor: pointer; color: var(--muted); transition: all 0.2s;
-
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 20px 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
   }
 
   .pw-tab.active { color: var(--accent-dim); border-bottom-color: var(--accent-dim); }
-
   .pw-tab:not(.active):hover { color: var(--accent); }
 
   .auth-panel { display: none; }
-
   .auth-panel.active { display: block; }
 
-  .login-title { font-size: 26px; font-weight: 300; font-style: italic; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+  .login-title {
+    font-size: 26px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 1.3;
+  }
 
   .login-sub, .login-sub-note, .guest-note, .login-note, .error-msg, .success-sub {
-
-    font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; line-height: 1.6;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.6;
   }
 
   .login-sub { color: var(--text-soft); margin-bottom: 4px; }
-
   .login-sub-note, .guest-note, .login-note { color: var(--muted); }
-
   .login-sub-note { margin-bottom: 24px; font-style: italic; }
-
   .guest-note { text-align: center; margin-top: 10px; font-style: italic; }
-
   .login-note { text-align: center; margin-top: 16px; }
-
   .error-msg { color: #b65d5d; margin-bottom: 14px; display: none; }
 
   .success-msg { display: none; text-align: center; padding: 20px; }
-
   .success-icon { font-size: 36px; margin-bottom: 12px; }
-
   .success-title { font-size: 22px; font-style: italic; font-weight: 300; margin-bottom: 8px; }
-
   .success-sub { color: var(--text-soft); }
 
   .input-field {
-
-    width: 100%; background: #fff; border: 1px solid var(--border);
-
-    border-radius: 8px; padding: 14px 16px; font-family: 'Jost', sans-serif;
-
-    font-size: 15px; font-weight: 300; color: var(--text);
-
-    outline: none; transition: border-color 0.2s; margin-bottom: 14px;
-
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 14px;
   }
 
   .input-field:focus { border-color: var(--accent-dim); }
-
   .input-field::placeholder { color: var(--muted); font-size: 15px; }
 
   .primary-btn {
-
-    width: 100%; background: linear-gradient(180deg, var(--accent), var(--accent-dim)); border: none; color: #fff;
-
-    font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500;
-
-    letter-spacing: 0.15em; text-transform: uppercase; padding: 15px;
-
-    border-radius: 8px; cursor: pointer; transition: all 0.2s;
-
+    width: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+    border: none;
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
   .primary-btn:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
-
   .primary-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .guest-btn {
-
-    width: 100%; background: transparent; border: 1px solid var(--border);
-
-    color: var(--text-soft); font-family: 'Jost', sans-serif; font-size: 14px;
-
-    font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
-
-    padding: 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 10px;
-
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
   }
 
   .guest-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
 
- 
-
   .type-page {
-
-    width: 100%; max-width: 720px;
-
-    padding: 24px 28px; display: flex;
-
-    flex-direction: column; align-items: center; gap: 32px;
-
+    width: 100%;
+    max-width: 720px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
   }
 
   .type-header { text-align: center; }
 
-  .type-title { font-size: 34px; font-weight: 300; font-style: italic; margin-bottom: 10px; }
-
-  .type-sub { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; color: var(--text-soft); }
-
-  .type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; }
-
-  .type-card {
-
-    background: var(--surface); border: 1px solid var(--border);
-
-    border-radius: 12px; padding: 28px 20px; cursor: pointer;
-
-    transition: all 0.25s; text-align: center;
-
-    display: flex; flex-direction: column; align-items: center; gap: 14px;
-
-    position: relative; overflow: hidden; box-shadow: var(--shadow-sm);
-
+  .type-title {
+    font-size: 34px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 10px;
   }
 
-  .type-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; opacity: 0; transition: opacity 0.25s; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .type-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-soft);
+  }
+
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .type-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.25s;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
 
   .type-card:hover::before { opacity: 1; }
 
-  .type-card:hover { background: var(--surface2); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(36,93,184,0.15), 0 2px 8px rgba(19,42,74,0.08); }
+  .type-card:hover {
+    background: var(--surface2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(36,93,184,0.15), 0 2px 8px rgba(19,42,74,0.08);
+  }
 
   .type-card:hover .type-name { color: var(--accent); }
 
   .type-illustration {
-
-    width: 84px; height: 84px; display: flex; align-items: center; justify-content: center;
-
-    border-radius: 50%; transition: transform 0.25s; background: rgba(61,123,224,0.10);
-
+    width: 84px;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.25s;
+    background: rgba(61,123,224,0.10);
   }
 
   .type-card:hover .type-illustration { transform: scale(1.05); }
 
-  .type-name { font-size: 20px; font-weight: 400; color: var(--text); transition: color 0.25s; }
+  .type-name {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text);
+    transition: color 0.25s;
+  }
 
-  .type-desc { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.6; }
-
- 
+  .type-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
 
   .chat-header {
-
-    width: 100%; max-width: 720px; padding: 12px 28px 0;
-
-    display: flex; justify-content: space-between; align-items: center; gap: 10px;
-
+    width: 100%;
+    max-width: 720px;
+    padding: 12px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
   .chat-type-badge {
-
-    font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 400;
-
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-dim);
-
-    background: var(--accent-soft); border: 1px solid rgba(61,123,224,0.25);
-
-    padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    background: var(--accent-soft);
+    border: 1px solid rgba(61,123,224,0.25);
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
   .chat-type-badge:hover { border-color: var(--accent-dim); color: var(--accent); }
 
   .clear-btn {
-
-    font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 400;
-
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-
-    background: none; border: 1px solid var(--border); padding: 5px 12px;
-
-    border-radius: 6px; cursor: pointer; transition: all 0.2s;
-
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
   .clear-btn:hover { color: var(--accent-dim); border-color: var(--accent-dim); }
 
-  .guest-badge { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; color: var(--muted); font-style: italic; }
-
-  .chat-divider {
-
-    width: 100%; max-width: 720px; padding: 12px 28px 0;
-
-    display: flex; align-items: center; gap: 16px;
-
+  .guest-badge {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
   }
 
-  .chat-divider::before, .chat-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .chat-divider {
+    width: 100%;
+    max-width: 720px;
+    padding: 12px 28px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
-  .chat-divider span { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .chat-divider::before, .chat-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
 
-  .chat-wrap { width: 100%; max-width: 720px; flex: 1; display: flex; flex-direction: column; padding: 0 28px; min-height: 320px; }
+  .chat-divider span {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
 
-  .messages { flex: 1; display: flex; flex-direction: column; padding-bottom: 16px; }
+  .chat-wrap {
+    width: 100%;
+    max-width: 720px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 28px;
+    min-height: 320px;
+  }
 
-  .msg { display: flex; flex-direction: column; gap: 6px; padding: 22px 0; border-bottom: 1px solid rgba(61,123,224,0.14); animation: fadeUp 0.4s ease both; }
+  .messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+  }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .msg {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(61,123,224,0.14);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   .msg-header { display: flex; align-items: center; gap: 8px; }
 
-  .msg-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 500; flex-shrink: 0; }
+  .msg-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
 
-  .msg.ai .msg-avatar { background: var(--accent-soft); border: 1px solid rgba(61,123,224,0.3); color: var(--accent); }
+  .msg.ai .msg-avatar {
+    background: var(--accent-soft);
+    border: 1px solid rgba(61,123,224,0.3);
+    color: var(--accent);
+  }
 
-  .msg.user .msg-avatar { background: rgba(95,145,230,0.14); border: 1px solid rgba(61,123,224,0.25); color: var(--accent-dim); }
+  .msg.user .msg-avatar {
+    background: rgba(95,145,230,0.14);
+    border: 1px solid rgba(61,123,224,0.25);
+    color: var(--accent-dim);
+  }
 
-  .msg-label { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; }
+  .msg-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
 
   .msg.user .msg-label { color: var(--accent-dim); }
-
   .msg.ai .msg-label { color: var(--accent); }
 
-  .msg-body { font-size: 18px; font-weight: 300; line-height: 1.8; color: var(--text); white-space: pre-wrap; padding-left: 36px; }
+  .msg-body {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre-wrap;
+    padding-left: 36px;
+  }
 
   .msg.user .msg-body { color: var(--text-soft); font-style: italic; }
 
-  .typing { display: flex; align-items: center; gap: 6px; padding: 22px 0 22px 36px; opacity: 0; transition: opacity 0.3s; }
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 0 22px 36px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
 
   .typing.visible { opacity: 1; }
 
-  .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-dim); animation: pulse 1.2s ease-in-out infinite; }
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
 
   .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-
   .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-  @keyframes pulse { 0%, 80%, 100% { opacity: 0.2; transform: scale(0.75); } 40% { opacity: 1; transform: scale(1); } }
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.75); }
+    40% { opacity: 1; transform: scale(1); }
+  }
 
-  .input-area { width: 100%; max-width: 720px; padding: 16px 28px 16px; display: flex; flex-direction: column; gap: 10px; position: sticky; bottom: 0; background: linear-gradient(to bottom, transparent, var(--bg) 25%); }
+  .input-area {
+    width: 100%;
+    max-width: 720px;
+    padding: 16px 28px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, var(--bg) 25%);
+  }
 
-  .input-box { display: flex; gap: 10px; align-items: flex-end; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm); }
+  .input-box {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
 
-  .input-box:focus-within { border-color: var(--accent-dim); box-shadow: 0 0 0 3px rgba(61,123,224,0.12), var(--shadow-sm); }
+  .input-box:focus-within {
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 0 3px rgba(61,123,224,0.12), var(--shadow-sm);
+  }
 
-  textarea { flex: 1; background: transparent; border: none; outline: none; resize: none; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--text); line-height: 1.6; min-height: 28px; max-height: 140px; overflow-y: auto; scrollbar-width: none; }
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 28px;
+    max-height: 140px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
 
-  textarea::placeholder { color: var(--muted); font-style: italic; font-size: 16px; }
+  textarea::placeholder {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 16px;
+  }
 
-  .send-btn { background: linear-gradient(180deg, var(--accent), var(--accent-dim)); border: none; color: #fff; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 18px; border-radius: 7px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .send-btn {
+    background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+    border: none;
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
 
   .send-btn:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
-
   .send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
-  .disclaimer { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; color: var(--muted); text-align: center; line-height: 1.6; }
+  .disclaimer {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+  }
 
- 
-
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(19,42,74,0.4); z-index: 100; align-items: center; justify-content: center; padding: 28px; }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(19,42,74,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
 
   .modal-overlay.active { display: flex; }
 
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; max-width: 420px; width: 100%; box-shadow: var(--shadow); text-align: center; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
 
-  .modal-title { font-size: 24px; font-weight: 300; font-style: italic; margin-bottom: 12px; color: var(--text); }
+  .modal-title {
+    font-size: 24px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
 
-  .modal-body { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300; color: var(--text-soft); line-height: 1.6; margin-bottom: 28px; }
+  .modal-body {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
 
   .modal-actions { display: flex; gap: 12px; }
 
   .modal-cancel, .modal-confirm {
-
-    flex: 1; font-family: 'Jost', sans-serif; font-size: 14px; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-
-    letter-spacing: 0.1em; text-transform: uppercase;
-
+    flex: 1;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  .modal-cancel { font-weight: 400; color: var(--muted); background: transparent; border: 1px solid var(--border); }
+  .modal-cancel {
+    font-weight: 400;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+  }
 
   .modal-cancel:hover { color: var(--text); border-color: var(--muted); }
 
-  .modal-confirm { font-weight: 500; color: #fff; background: var(--accent-dim); border: none; }
+  .modal-confirm {
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent-dim);
+    border: none;
+  }
 
   .modal-confirm:hover { background: var(--accent); }
 
- 
-
-  /* ── Page-bottom logo ── */
-
   .page-logo-wrap {
-
-    width: 100%; max-width: 720px;
-
-    display: flex; justify-content: center; align-items: center;
-
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px 28px 4px;
-
     background: transparent;
-
   }
 
   .page-logo-wrap img {
-
-    height: 200px; width: auto;
-
+    height: 200px;
+    width: auto;
     display: block;
-
     background: transparent;
-
     opacity: 0.82;
-
     transition: opacity 0.2s;
-
   }
 
   .page-logo-wrap img:hover { opacity: 1; }
 
- 
-
   .site-disclaimer {
-
-    width: 100%; max-width: 720px; padding: 16px 28px 28px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300; color: var(--muted); text-align: center; line-height: 1.7; border-top: 1px solid var(--border); margin-top: 8px;
-
+    width: 100%;
+    max-width: 720px;
+    padding: 16px 28px 28px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
   }
 
- 
-
-  @media (max-width: 640px) { .how-it-works { grid-template-columns: repeat(2, 1fr); padding: 32px 20px 24px; } }
+  @media (max-width: 640px) {
+    .how-it-works { grid-template-columns: repeat(2, 1fr); padding: 32px 20px 24px; }
+  }
 
   @media (max-width: 520px) {
-
     .how-it-works { grid-template-columns: 1fr; padding: 32px 20px 24px; }
-
     .type-grid { grid-template-columns: 1fr; }
-
     .hero, .type-page, .chat-header, .chat-divider, .chat-wrap, .input-area, .global-nav { padding-left: 20px; padding-right: 20px; }
-
     .login-section { padding-left: 20px; padding-right: 20px; }
-
     .login-card { padding: 28px 20px; }
-
     .msg-body { font-size: 17px; }
-
     textarea { font-size: 16px; }
-
     .site-disclaimer { padding-left: 20px; padding-right: 20px; }
-
     .page-logo-wrap { padding-left: 20px; padding-right: 20px; }
-
     .page-logo-wrap img { height: 200px; }
-
     .trust-strip { flex-direction: column; max-width: 100%; }
-
     .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
-
     .trust-item:last-child { border-bottom: none; }
-
   }
-
 </style>
-
 </head>
-
 <body>
 
- 
-
 <div class="modal-overlay" id="confirmModal">
-
   <div class="modal">
-
     <div class="modal-title">Clear conversation?</div>
-
     <div class="modal-body" id="modalBody">This will permanently delete your conversation history in this coaching area. Your other conversations will not be affected.</div>
-
     <div class="modal-actions">
-
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-
       <button class="modal-confirm" onclick="confirmClear()">Yes, clear it</button>
-
     </div>
-
   </div>
-
 </div>
-
- 
 
 <div id="loadingScreen" class="loading-screen">
-
   <div class="spinner"></div>
-
   Sales Coaching
-
 </div>
 
- 
-
 <div id="landingPage" class="page">
-
   <div class="global-nav">
-
     <div class="global-nav-left">
-
       <span class="nav-greeting" id="landingGreeting" style="display:none;"></span>
-
     </div>
-
     <div class="global-nav-right">
-
       <button class="nav-btn" id="landingSignoutBtn" style="display:none;" onclick="signOut()">Sign out</button>
-
     </div>
-
   </div>
-
- 
 
   <div class="hero">
-
     <div class="logo-wrap"><div class="logo-text">Bluebird Sales Coach</div></div>
-
     <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:15px; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:18px;">Conversations That Convert</div>
 
-    <h1 class="hero-title">Sales coaching for conversations that build trust and move deals forward</h1>
+    <h1 class="hero-title">Sales coaching for conversations that build trust, reduce friction, and move business forward</h1>
 
-    <p class="hero-sub">Discovery · Objections · Follow-up · Negotiation</p>
+    <p class="hero-sub">Meaningful Calls · Emails & Texts · Negotiating Objections · Dispute Resolution & De-escalation</p>
 
-    <p class="hero-copy">Bluebird Sales Coach helps sharpen the way you ask questions, frame value, handle resistance, influence decisions, and write with clarity. Use it to practice customer conversations, improve sales messaging, and get direct feedback grounded in effective communication.</p>
+    <p class="hero-copy">Bluebird Sales Coach helps sharpen the way you ask questions, frame value, handle resistance, write with clarity, and respond in high-stakes business situations. Use it to practice customer conversations, improve sales messaging, navigate objections, and de-escalate tension with credible communication.</p>
 
     <div class="trust-strip">
-
       <div class="trust-item">
-
         <div class="trust-icon">
-
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-
             <rect x="4" y="11" width="16" height="9" rx="2" stroke="#245db8" stroke-width="1.5"/>
-
             <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
             <circle cx="12" cy="15.5" r="1.3" fill="#245db8"/>
-
           </svg>
-
         </div>
-
         <div class="trust-label">Confidential Advice</div>
-
       </div>
 
       <div class="trust-item">
-
         <div class="trust-icon">
-
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-
             <path d="M4 17L9 12L13 15L20 8" stroke="#245db8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-
             <path d="M16 8H20V12" stroke="#245db8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-
           </svg>
-
         </div>
-
         <div class="trust-label">Practical Coaching</div>
-
       </div>
 
       <div class="trust-item">
-
         <div class="trust-icon">
-
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-
             <path d="M6 7h12M6 12h8M6 17h10" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
             <circle cx="18" cy="12" r="3" stroke="#245db8" stroke-width="1.5"/>
-
           </svg>
-
         </div>
-
         <div class="trust-label">Clear Messaging</div>
-
       </div>
 
       <div class="trust-item">
-
         <div class="trust-icon">
-
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-
             <path d="M12 4L19 7V11C19 15 16.5 18.5 12 20C7.5 18.5 5 15 5 11V7L12 4Z" stroke="#245db8" stroke-width="1.5" stroke-linejoin="round"/>
-
             <path d="M9.5 12.2L11.2 13.9L14.8 10.3" stroke="#245db8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-
           </svg>
-
         </div>
-
         <div class="trust-label">Client Trust</div>
-
       </div>
-
     </div>
-
   </div>
-
- 
 
   <div class="how-it-works">
-
-    <div class="step"><div class="step-number">01</div><div class="step-title">Choose a sales scenario</div><div class="step-desc">Pick the kind of conversation you want to improve, from discovery to negotiation.</div></div>
-
-    <div class="step"><div class="step-number">02</div><div class="step-title">Describe the real situation</div><div class="step-desc">Share the prospect, the friction, your draft message, or the call that did not go how you wanted.</div></div>
-
-    <div class="step"><div class="step-number">03</div><div class="step-title">Get direct coaching</div><div class="step-desc">Receive communication-focused guidance, rewrites, and talk tracks you can actually use.</div></div>
-
-    <div class="step"><div class="step-number">04</div><div class="step-title">Practice and improve</div><div class="step-desc">Refine your next email, meeting agenda, objection response, or closing language with confidence.</div></div>
-
+    <div class="step">
+      <div class="step-number">01</div>
+      <div class="step-title">Choose a coaching area</div>
+      <div class="step-desc">Pick the kind of business conversation you want to improve, from meaningful calls to dispute resolution.</div>
+    </div>
+    <div class="step">
+      <div class="step-number">02</div>
+      <div class="step-title">Describe the real situation</div>
+      <div class="step-desc">Share the customer context, the friction, your draft message, or the call that did not go how you wanted.</div>
+    </div>
+    <div class="step">
+      <div class="step-number">03</div>
+      <div class="step-title">Get direct coaching</div>
+      <div class="step-desc">Receive communication-focused guidance, rewrites, and talk tracks you can actually use.</div>
+    </div>
+    <div class="step">
+      <div class="step-number">04</div>
+      <div class="step-title">Practice and improve</div>
+      <div class="step-desc">Refine your next call, email, objection response, or de-escalation message with confidence.</div>
+    </div>
   </div>
 
- 
-
   <div class="login-section">
-
     <div class="login-card">
-
       <div class="auth-toggle">
-
         <button class="auth-toggle-btn active" id="toggleMagic" onclick="setAuthMode('magic')">Email Link</button>
-
         <button class="auth-toggle-btn" id="togglePassword" onclick="setAuthMode('password')">Password</button>
-
         <button class="auth-toggle-btn" id="toggleGuest" onclick="setAuthMode('guest')">Guest</button>
-
       </div>
 
- 
-
       <div class="auth-panel active" id="panelMagic">
-
         <div id="magicLinkForm">
-
           <div class="login-title">Start coaching or return to your saved conversations</div>
-
           <div class="login-sub">Enter your email and we will send you a secure sign-in link.</div>
-
-          <div class="login-sub-note">Use an account to save your coaching history by sales scenario.</div>
-
+          <div class="login-sub-note">Use an account to save your coaching history by conversation type.</div>
           <input type="text" id="magicFirstName" class="input-field" placeholder="First name (optional)" />
-
           <input type="email" id="emailInput" class="input-field" placeholder="your@email.com" />
-
           <button class="primary-btn" id="sendLinkBtn" onclick="sendMagicLink()">Send my login link</button>
-
-          <div class="login-note">Practice privately, save your threads, and come back to the same sales scenario later.</div>
-
+          <div class="login-note">Practice privately, save your threads, and come back to the same coaching area later.</div>
         </div>
 
         <div class="success-msg" id="successMsg">
-
           <div class="success-icon">✉️</div>
-
           <div class="success-title">Check your inbox</div>
-
           <div class="success-sub">We sent a login link to <strong id="sentEmail"></strong>.<br>Click it to open Bluebird Sales. The link expires in 15 minutes.</div>
-
         </div>
-
       </div>
 
- 
-
       <div class="auth-panel" id="panelPassword">
-
         <div class="pw-tabs">
-
           <button class="pw-tab active" id="tabSignin" onclick="setPwTab('signin')">Sign In</button>
-
           <button class="pw-tab" id="tabRegister" onclick="setPwTab('register')">Register</button>
-
         </div>
 
         <div id="signinForm">
-
           <div class="login-title">Welcome back</div>
-
           <div class="login-sub" style="margin-bottom:20px;">Sign in with your email and password.</div>
-
           <div class="error-msg" id="signinError"></div>
-
           <input type="email" id="signinEmail" class="input-field" placeholder="your@email.com" />
-
           <input type="password" id="signinPassword" class="input-field" placeholder="Password" />
-
           <button class="primary-btn" id="signinBtn" onclick="passwordSignIn()">Sign In</button>
-
           <div class="login-note" style="margin-top:14px;">Forgot your password? Use the Email Link option instead.</div>
-
         </div>
 
         <div id="registerForm" style="display:none;">
-
           <div class="login-title">Create your account</div>
-
           <div class="login-sub" style="margin-bottom:20px;">Set up a password to save your sales coaching conversations.</div>
-
           <div class="error-msg" id="registerError"></div>
-
           <input type="text" id="registerFirstName" class="input-field" placeholder="First name (optional)" />
-
           <input type="email" id="registerEmail" class="input-field" placeholder="your@email.com" />
-
           <input type="password" id="registerPassword" class="input-field" placeholder="Password (min 8 characters)" />
-
           <input type="password" id="registerConfirm" class="input-field" placeholder="Confirm password" />
-
           <button class="primary-btn" id="registerBtn" onclick="passwordRegister()">Create Account</button>
-
           <div class="login-note" style="margin-top:14px;">No credit card required.</div>
-
         </div>
-
       </div>
-
- 
 
       <div class="auth-panel" id="panelGuest">
-
         <div class="login-title">Continue as guest</div>
-
         <div class="login-sub" style="margin-bottom:8px;">Start practicing right away — no account needed.</div>
-
         <input type="text" id="guestFirstName" class="input-field" placeholder="First name (optional)" />
-
         <div class="guest-note" style="text-align:left; margin-bottom:24px;">Guest sessions are private but cannot be saved or resumed later.</div>
-
         <button class="primary-btn" onclick="confirmGuest()">Start as Guest</button>
-
         <button class="guest-btn" onclick="setAuthMode('magic')">← Back to Login</button>
-
       </div>
-
     </div>
-
   </div>
 
- 
-
   <div class="page-logo-wrap">
-
     <img src="logo.png" alt="Bluebird Sales logo" />
-
   </div>
 
   <div class="site-disclaimer">
-
     Bluebird Sales provides sales coaching and communication practice only. It does not guarantee revenue outcomes, legal compliance, or business results. Use judgment and follow your company policies.
-
   </div>
-
 </div>
 
- 
-
 <div id="typePage" class="page">
-
   <div class="global-nav">
-
     <div class="global-nav-left">
-
       <div class="nav-logo-wrap" onclick="goHome()"><div class="nav-logo-mark">Bluebird</div></div>
-
       <span class="nav-greeting" id="typeGreeting" style="display:none;"></span>
-
     </div>
-
     <div class="global-nav-right">
-
       <button class="nav-btn" onclick="goHome()">Home</button>
-
       <button class="nav-btn" id="typeSignoutBtn" onclick="signOut()">Sign out</button>
-
     </div>
-
   </div>
 
   <div class="type-page">
-
     <div class="type-header">
-
       <div class="type-title">What would you like to work on?</div>
-
-      <div class="type-sub">Choose the sales conversation you want to sharpen today</div>
-
+      <div class="type-sub">Choose the business conversation you want to sharpen today</div>
     </div>
 
     <div class="type-grid">
-
-      <div class="type-card" onclick="selectType('discovery')">
-
+      <div class="type-card" onclick="selectType('meaningful_calls')">
         <div class="type-illustration">
-
           <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-
             <circle cx="23" cy="23" r="10" stroke="#245db8" stroke-width="1.5"/>
-
             <path d="M31 31L40 40" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
             <path d="M18 23H28M23 18V28" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
           </svg>
-
         </div>
-
-        <div class="type-name">Discovery Calls</div>
-
-        <div class="type-desc">Ask better questions, uncover pain, and guide a stronger first conversation.</div>
-
+        <div class="type-name">Meaningful Calls</div>
+        <div class="type-desc">Lead stronger customer and stakeholder conversations with better questions, positioning, and listening.</div>
       </div>
 
-      <div class="type-card" onclick="selectType('objections')">
-
+      <div class="type-card" onclick="selectType('emails_texts')">
         <div class="type-illustration">
-
           <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-
-            <path d="M27 9L43 18V36L27 45L11 36V18L27 9Z" stroke="#245db8" stroke-width="1.5"/>
-
-            <path d="M20 27H34" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
-            <path d="M27 20V34" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
-          </svg>
-
-        </div>
-
-        <div class="type-name">Objection Handling</div>
-
-        <div class="type-desc">Respond to pricing, timing, competition, and stakeholder concerns with clarity.</div>
-
-      </div>
-
-      <div class="type-card" onclick="selectType('followup')">
-
-        <div class="type-illustration">
-
-          <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-
             <rect x="11" y="14" width="32" height="24" rx="3" stroke="#245db8" stroke-width="1.5"/>
-
             <path d="M14 18L27 28L40 18" stroke="#245db8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-
             <path d="M19 42H35" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
           </svg>
-
         </div>
-
-        <div class="type-name">Follow-Up Emails</div>
-
-        <div class="type-desc">Write concise, useful follow-ups that earn replies and keep momentum alive.</div>
-
+        <div class="type-name">Emails & Texts</div>
+        <div class="type-desc">Write concise follow-ups, recap notes, and messages that are clear, useful, and easy to answer.</div>
       </div>
 
-      <div class="type-card" onclick="selectType('negotiation')">
-
+      <div class="type-card" onclick="selectType('negotiating_objections')">
         <div class="type-illustration">
-
           <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
-
-            <circle cx="18" cy="21" r="5" stroke="#245db8" stroke-width="1.5"/>
-
-            <circle cx="36" cy="21" r="5" stroke="#245db8" stroke-width="1.5"/>
-
-            <path d="M13 36C13 31 15.5 28 18 28C20.5 28 23 31 23 36" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
-            <path d="M31 36C31 31 33.5 28 36 28C38.5 28 41 31 41 36" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
-            <path d="M23 24H31" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
-
+            <path d="M27 9L43 18V36L27 45L11 36V18L27 9Z" stroke="#245db8" stroke-width="1.5"/>
+            <path d="M20 27H34" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M27 20V34" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-
         </div>
-
-        <div class="type-name">Negotiation & Closing</div>
-
-        <div class="type-desc">Protect value, navigate decision makers, and close with confidence and control.</div>
-
+        <div class="type-name">Negotiating Objections</div>
+        <div class="type-desc">Handle resistance, protect value, and navigate procurement, pricing, timing, and stakeholder concerns.</div>
       </div>
 
+      <div class="type-card" onclick="selectType('dispute_resolution')">
+        <div class="type-illustration">
+          <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+            <path d="M18 17L27 26L36 17" stroke="#245db8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 32C17.5 35.5 21 38 27 38C33 38 36.5 35.5 38 32" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="18" cy="17" r="4" stroke="#245db8" stroke-width="1.5"/>
+            <circle cx="36" cy="17" r="4" stroke="#245db8" stroke-width="1.5"/>
+            <path d="M27 26V33" stroke="#245db8" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="type-name">Dispute Resolution & De-escalation</div>
+        <div class="type-desc">Respond to complaints, tension, and high-stakes business friction with calm, credible language and next steps.</div>
+      </div>
     </div>
-
   </div>
 
   <div class="page-logo-wrap">
-
     <img src="logo.png" alt="Bluebird Sales logo" />
-
   </div>
 
   <div class="site-disclaimer">
-
     Bluebird Sales provides sales coaching and communication practice only. It does not guarantee revenue outcomes, legal compliance, or business results. Use judgment and follow your company policies.
-
   </div>
-
 </div>
 
- 
-
 <div id="chatPage" class="page">
-
   <div class="global-nav">
-
     <div class="global-nav-left">
-
       <div class="nav-logo-wrap" onclick="goToTypeSelector()"><div class="nav-logo-mark">Bluebird</div></div>
-
       <span class="nav-greeting" id="chatGreeting" style="display:none;"></span>
-
     </div>
-
     <div class="global-nav-right">
-
       <button class="nav-btn" onclick="goHome()">Home</button>
-
       <button class="nav-btn" id="chatSignoutBtn" onclick="signOut()">Sign out</button>
-
     </div>
-
   </div>
 
   <div class="chat-header">
-
-    <div class="chat-type-badge" id="typeBadge" onclick="goToTypeSelector()">Discovery Calls</div>
-
+    <div class="chat-type-badge" id="typeBadge" onclick="goToTypeSelector()">Meaningful Calls</div>
     <div style="display:flex; align-items:center; gap:8px;">
-
       <span class="guest-badge" id="guestBadge" style="display:none;">Guest session</span>
-
       <button class="clear-btn" id="clearBtn" onclick="promptClearHistory()" style="display:none;">Clear history</button>
-
     </div>
-
   </div>
 
   <div class="chat-divider"><span id="chatDividerLabel">Your coaching thread</span></div>
 
   <div class="chat-wrap">
-
     <div class="messages" id="messages"></div>
-
     <div class="typing" id="typing">
-
       <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-
     </div>
-
   </div>
 
   <div class="input-area">
-
     <div class="input-box">
-
-      <textarea id="userInput" placeholder="Paste the situation, draft email, objection, or call notes…" rows="1"></textarea>
-
+      <textarea id="userInput" placeholder="Paste the situation, draft email, objection, tense customer message, or call notes…" rows="1"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
-
     </div>
-
     <div class="disclaimer">Bluebird Sales is a communication coach, not a replacement for manager review, legal review, or company policy.</div>
-
   </div>
 
   <div class="page-logo-wrap">
-
     <img src="logo.png" alt="Bluebird Sales logo" />
-
   </div>
 
   <div class="site-disclaimer">
-
     Bluebird Sales provides sales coaching and communication practice only. It does not guarantee revenue outcomes, legal compliance, or business results. Use judgment and follow your company policies.
-
   </div>
-
 </div>
 
- 
-
 <script>
+  const DEFAULT_TYPE = 'meaningful_calls';
 
   let isLoading = false;
-
-  let currentType = 'discovery';
-
+  let currentType = DEFAULT_TYPE;
   let userEmailAddress = '';
-
   let userFirstName = '';
-
   let isGuest = false;
-
   let guestHistory = [];
 
- 
-
   const TYPE_CONFIG = {
-
-    discovery: {
-
-      label: 'Discovery Calls',
-
-      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you run stronger discovery conversations — the kind that build trust, uncover real business pain, and create momentum without sounding scripted.\n\nWe can work on your questions, your positioning, your listening, and how you transition from curiosity to value. Bring me the real situation and I will coach you directly.\n\nTo start: what prospect conversation are you preparing for or replaying right now?`
-
+    meaningful_calls: {
+      label: 'Meaningful Calls',
+      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you lead stronger business conversations — the kind that build trust, uncover real priorities, and move opportunities forward without sounding scripted.\n\nWe can work on discovery, stakeholder conversations, value framing, listening, and how you guide the next step with more confidence and clarity.\n\nTo start: what conversation are you preparing for or replaying right now?`
     },
 
-    objections: {
-
-      label: 'Objection Handling',
-
-      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you handle objections with calm, clarity, and credibility. That means we do not argue, panic, or rush to discount. We slow the moment down, understand the real concern, and respond with precision.\n\nWe can work on pricing pushback, competitor comparisons, timing objections, stakeholder concerns, or any resistance that stalls a deal.\n\nTo start: what objection are you facing, and how did the buyer phrase it?`
-
+    emails_texts: {
+      label: 'Emails & Texts',
+      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you write emails and texts that are clear, useful, and easy to answer. Strong written communication does not chase. It creates relevance, reduces friction, and makes the next step feel obvious.\n\nWe can tighten your drafts, improve your follow-up, sharpen your recaps, or rewrite a message that is not landing.\n\nTo start: paste the draft, the context, or the exact message you want help improving.`
     },
 
-    followup: {
-
-      label: 'Follow-Up Emails',
-
-      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you write follow-up messages that are clear, useful, and easy to answer. Great follow-up is not about chasing. It is about relevance, timing, and making the next step feel obvious.\n\nWe can tighten your subject lines, rewrite your emails, improve your call recaps, or build a better sequence.\n\nTo start: paste the draft, the context, or the exact follow-up you need help writing.`
-
+    negotiating_objections: {
+      label: 'Negotiating Objections',
+      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you handle objections and negotiation moments with calm, clarity, and commercial strength. We do not panic, argue, or rush to discount. We slow the moment down, understand what is really happening, and respond with precision.\n\nWe can work on pricing pushback, procurement pressure, timing objections, stakeholder concerns, concessions, and closing language.\n\nTo start: where is the conversation getting stuck, and how did the buyer phrase it?`
     },
 
-    negotiation: {
-
-      label: 'Negotiation & Closing',
-
-      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you navigate negotiation and closing with confidence. We can work on protecting value, responding to procurement pressure, aligning stakeholders, asking for commitment, and moving from interest to decision.\n\nThe goal is not to sound aggressive. It is to sound clear, credible, and in control.\n\nTo start: where is the deal getting stuck right now?`
-
+    dispute_resolution: {
+      label: 'Dispute Resolution & De-escalation',
+      opening: `Welcome. I'm Bluebird.\n\nI'm here to help you respond to business tension with calm, credible communication. That includes complaints, damaged trust, billing friction, delivery issues, unhappy customers, and moments where the conversation needs to be de-escalated instead of pushed.\n\nWe can work on acknowledgment language, resolution framing, next-step communication, and how to respond without sounding defensive or careless.\n\nTo start: what happened, and what do you need to say or do next?`
     }
-
   };
-
- 
 
   const PAGE_HASHES = {
-
     landingPage: '#/',
-
     typePage: '#/topics',
-
     chatPage: '#/chat'
-
   };
 
- 
+  async function apiFetch(url, options = {}) {
+    const headers = { ...(options.headers || {}) };
+    if (options.body && !headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    return fetch(url, {
+      credentials: 'include',
+      ...options,
+      headers
+    });
+  }
 
   function showPage(name) {
-
     document.getElementById('loadingScreen').style.display = 'none';
-
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
     if (name) {
-
       document.getElementById(name).classList.add('active');
 
       if (name === 'chatPage') {
-
         history.replaceState(null, '', `#/chat/${currentType}`);
-
       } else {
-
         history.replaceState(null, '', PAGE_HASHES[name] || '#/');
-
       }
-
     }
 
     updateGreetings();
-
     updateSignoutButtons();
-
   }
 
- 
-
   window.addEventListener('hashchange', () => {
-
     const hash = window.location.hash;
 
     if (hash.startsWith('#/chat/')) {
-
       const type = hash.replace('#/chat/', '');
-
       if (TYPE_CONFIG[type] && (userEmailAddress || isGuest)) {
-
         selectType(type);
-
       } else {
-
         showPage('landingPage');
-
       }
-
     } else if (hash === '#/topics') {
-
       if (userEmailAddress || isGuest) showPage('typePage');
-
       else showPage('landingPage');
-
     } else {
-
       showPage('landingPage');
-
     }
-
   });
 
- 
-
   function updateGreetings() {
-
     const name = userFirstName ? `Hi, ${userFirstName}` : '';
-
     const guestLabel = isGuest ? 'Guest session' : '';
-
     const display = name || guestLabel;
 
     ['typeGreeting', 'chatGreeting'].forEach(id => {
-
       const el = document.getElementById(id);
-
-      if (el) { el.textContent = display; el.style.display = display ? 'inline' : 'none'; }
-
+      if (el) {
+        el.textContent = display;
+        el.style.display = display ? 'inline' : 'none';
+      }
     });
 
     const lg = document.getElementById('landingGreeting');
-
-    if (lg) { lg.textContent = name; lg.style.display = name ? 'inline' : 'none'; }
-
+    if (lg) {
+      lg.textContent = name;
+      lg.style.display = name ? 'inline' : 'none';
+    }
   }
 
- 
-
   function updateSignoutButtons() {
-
     const label = isGuest ? 'Exit' : 'Sign out';
 
     ['typeSignoutBtn', 'chatSignoutBtn'].forEach(id => {
-
       const el = document.getElementById(id);
-
       if (el) el.textContent = label;
-
     });
 
     const lb = document.getElementById('landingSignoutBtn');
-
     if (lb) lb.style.display = (!isGuest && userEmailAddress) ? 'inline-block' : 'none';
-
   }
 
- 
-
   function setAuthMode(mode) {
-
     document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
-
     document.querySelectorAll('.auth-toggle-btn').forEach(b => b.classList.remove('active'));
 
     const panelMap = { magic: 'panelMagic', password: 'panelPassword', guest: 'panelGuest' };
-
     const btnMap = { magic: 'toggleMagic', password: 'togglePassword', guest: 'toggleGuest' };
 
     if (panelMap[mode]) document.getElementById(panelMap[mode]).classList.add('active');
-
     if (btnMap[mode]) document.getElementById(btnMap[mode]).classList.add('active');
-
   }
-
- 
 
   function setPwTab(tab) {
-
     document.getElementById('signinForm').style.display = tab === 'signin' ? 'block' : 'none';
-
     document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-
     document.getElementById('tabSignin').classList.toggle('active', tab === 'signin');
-
     document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
-
     document.getElementById('signinError').style.display = 'none';
-
     document.getElementById('registerError').style.display = 'none';
-
   }
-
- 
 
   function showError(id, msg) {
-
     const el = document.getElementById(id);
-
     el.textContent = msg;
-
     el.style.display = 'block';
-
   }
-
- 
 
   function goToTypeSelector() { showPage('typePage'); }
 
   function goHome() {
-
     if (isGuest || !userEmailAddress) showPage('landingPage');
-
     else showPage('typePage');
-
   }
-
- 
 
   function promptClearHistory() {
-
     const label = TYPE_CONFIG[currentType]?.label || currentType;
-
     document.getElementById('modalBody').textContent =
-
       `This will permanently delete your ${label} coaching history. Your other conversations will not be affected.`;
-
     document.getElementById('confirmModal').classList.add('active');
-
   }
-
- 
 
   function closeModal() {
-
     document.getElementById('confirmModal').classList.remove('active');
-
   }
 
- 
-
   async function confirmClear() {
-
     closeModal();
 
     try {
-
-      const res = await fetch('/api/messages?type=' + currentType, { method: 'DELETE' });
-
+      const res = await apiFetch('/api/messages?type=' + currentType, { method: 'DELETE' });
       const data = await res.json();
 
       if (data.success) {
-
         document.getElementById('messages').innerHTML = '';
-
         appendMessage('ai', TYPE_CONFIG[currentType].opening, false);
-
       }
-
     } catch {
-
       alert('Could not clear conversation. Please try again.');
-
     }
-
   }
 
- 
-
   document.getElementById('confirmModal').addEventListener('click', function(e) {
-
     if (e.target === this) closeModal();
-
   });
 
- 
-
   async function passwordSignIn() {
-
     const email = document.getElementById('signinEmail').value.trim();
-
     const password = document.getElementById('signinPassword').value;
 
     if (!email || !password) return showError('signinError', 'Please enter your email and password.');
 
     const btn = document.getElementById('signinBtn');
-
-    btn.disabled = true; btn.textContent = 'Signing in...';
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
 
     try {
-
-      const res = await fetch('/api/auth/login', {
-
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-
+      const res = await apiFetch('/api/auth/login', {
+        method: 'POST',
         body: JSON.stringify({ email, password })
-
       });
 
       const data = await res.json();
 
       if (data.success) {
-
         isGuest = false;
-
         userEmailAddress = email;
-
         userFirstName = data.firstName || '';
-
         showPage('typePage');
-
       } else {
-
         showError('signinError', data.error || 'Sign in failed.');
-
-        btn.disabled = false; btn.textContent = 'Sign In';
-
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
       }
-
     } catch {
-
       showError('signinError', 'Something went wrong. Please try again.');
-
-      btn.disabled = false; btn.textContent = 'Sign In';
-
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
     }
-
   }
 
- 
-
   async function passwordRegister() {
-
     const firstName = document.getElementById('registerFirstName').value.trim();
-
     const email = document.getElementById('registerEmail').value.trim();
-
     const password = document.getElementById('registerPassword').value;
-
     const confirm = document.getElementById('registerConfirm').value;
 
     if (!email || !password) return showError('registerError', 'Please fill in all fields.');
-
     if (password.length < 8) return showError('registerError', 'Password must be at least 8 characters.');
-
     if (password !== confirm) return showError('registerError', 'Passwords do not match.');
 
     const btn = document.getElementById('registerBtn');
-
-    btn.disabled = true; btn.textContent = 'Creating account...';
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
 
     try {
-
-      const res = await fetch('/api/auth/register', {
-
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-
+      const res = await apiFetch('/api/auth/register', {
+        method: 'POST',
         body: JSON.stringify({ email, password, firstName })
-
       });
 
       const data = await res.json();
 
       if (data.success) {
-
         isGuest = false;
-
         userEmailAddress = email;
-
         userFirstName = firstName;
-
         showPage('typePage');
-
       } else {
-
         showError('registerError', data.error || 'Registration failed.');
-
-        btn.disabled = false; btn.textContent = 'Create Account';
-
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
       }
-
     } catch {
-
       showError('registerError', 'Something went wrong. Please try again.');
-
-      btn.disabled = false; btn.textContent = 'Create Account';
-
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
     }
-
   }
 
- 
-
   async function sendMagicLink() {
-
     const firstName = document.getElementById('magicFirstName').value.trim();
-
     const email = document.getElementById('emailInput').value.trim();
 
     if (!email) return;
 
     const btn = document.getElementById('sendLinkBtn');
-
-    btn.disabled = true; btn.textContent = 'Sending...';
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
 
     try {
-
-      const res = await fetch('/api/auth/send-link', {
-
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-
+      const res = await apiFetch('/api/auth/send-link', {
+        method: 'POST',
         body: JSON.stringify({ email, firstName })
-
       });
 
       const data = await res.json();
 
       if (data.success) {
-
         document.getElementById('sentEmail').textContent = email;
-
         document.getElementById('magicLinkForm').style.display = 'none';
-
         document.getElementById('successMsg').style.display = 'block';
-
       } else {
-
-        btn.disabled = false; btn.textContent = 'Send my login link';
-
+        btn.disabled = false;
+        btn.textContent = 'Send my login link';
         alert('Something went wrong. Please try again.');
-
       }
-
     } catch {
-
-      btn.disabled = false; btn.textContent = 'Send my login link';
-
+      btn.disabled = false;
+      btn.textContent = 'Send my login link';
       alert('Something went wrong. Please try again.');
-
     }
-
   }
-
- 
 
   function confirmGuest() {
-
     isGuest = true;
-
     guestHistory = [];
-
     userFirstName = document.getElementById('guestFirstName').value.trim();
-
     userEmailAddress = '';
-
+    currentType = DEFAULT_TYPE;
     document.getElementById('guestBadge').style.display = 'inline';
-
     document.getElementById('clearBtn').style.display = 'none';
-
     showPage('typePage');
-
   }
 
- 
-
   window.addEventListener('load', async () => {
-
     const params = new URLSearchParams(window.location.search);
-
-    if (params.get('error')) { showPage('landingPage'); return; }
+    if (params.get('error')) {
+      showPage('landingPage');
+      return;
+    }
 
     try {
-
-      const res = await fetch('/api/auth/me');
-
+      const res = await apiFetch('/api/auth/me');
       const data = await res.json();
 
       if (data.authenticated) {
-
         isGuest = false;
-
         userEmailAddress = data.email;
-
         userFirstName = data.firstName || '';
-
         showPage('typePage');
-
       } else {
-
         showPage('landingPage');
-
       }
-
-    } catch { showPage('landingPage'); }
-
+    } catch {
+      showPage('landingPage');
+    }
   });
 
- 
-
   async function signOut() {
-
     if (isGuest) {
-
-      isGuest = false; guestHistory = []; userFirstName = ''; currentType = 'discovery';
-
+      isGuest = false;
+      guestHistory = [];
+      userFirstName = '';
+      currentType = DEFAULT_TYPE;
       document.getElementById('messages').innerHTML = '';
-
       document.getElementById('guestBadge').style.display = 'none';
-
-      showPage('landingPage'); return;
-
+      showPage('landingPage');
+      return;
     }
 
-    await fetch('/api/auth/signout', { method: 'POST' });
+    await apiFetch('/api/auth/signout', { method: 'POST' });
 
-    isGuest = false; userFirstName = ''; userEmailAddress = ''; currentType = 'discovery';
-
+    isGuest = false;
+    userFirstName = '';
+    userEmailAddress = '';
+    currentType = DEFAULT_TYPE;
     document.getElementById('messages').innerHTML = '';
-
     document.getElementById('magicLinkForm').style.display = 'block';
-
     document.getElementById('successMsg').style.display = 'none';
-
     document.getElementById('sendLinkBtn').disabled = false;
-
     document.getElementById('sendLinkBtn').textContent = 'Send my login link';
-
     document.getElementById('emailInput').value = '';
-
+    document.getElementById('guestBadge').style.display = 'none';
     setAuthMode('magic');
-
     showPage('landingPage');
-
   }
 
- 
-
   async function selectType(type) {
-
     currentType = type;
-
     guestHistory = [];
 
     const config = TYPE_CONFIG[type];
-
     document.getElementById('typeBadge').textContent = config.label;
-
     document.getElementById('chatDividerLabel').textContent = config.label + ' · Your coaching thread';
-
     document.getElementById('messages').innerHTML = '';
-
     document.getElementById('clearBtn').style.display = (!isGuest) ? 'inline-block' : 'none';
 
     showPage('chatPage');
 
     if (isGuest) {
-
       guestHistory.push({ role: 'assistant', content: config.opening });
-
       appendMessage('ai', config.opening, false);
-
     } else {
-
       await loadHistory(type);
-
     }
-
   }
 
- 
-
   async function loadHistory(type) {
-
     try {
-
-      const res = await fetch('/api/messages?type=' + type);
-
+      const res = await apiFetch('/api/messages?type=' + type);
       const data = await res.json();
 
       if (data.messages && data.messages.length > 0) {
-
         data.messages.forEach(m => appendMessage(m.role === 'assistant' ? 'ai' : 'user', m.content, false));
-
         document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-
       } else {
-
         appendMessage('ai', TYPE_CONFIG[type].opening, false);
-
       }
-
     } catch {
-
-      appendMessage('ai', 'Welcome back. What sales conversation would you like to work on today?', false);
-
+      appendMessage('ai', TYPE_CONFIG[type]?.opening || 'Welcome back. What would you like to work on today?', false);
     }
-
   }
-
- 
 
   function appendMessage(role, text, animate = true) {
-
     const container = document.getElementById('messages');
-
     const msg = document.createElement('div');
-
     msg.className = 'msg ' + role;
-
     if (!animate) msg.style.animation = 'none';
 
-    const header = document.createElement('div'); header.className = 'msg-header';
+    const header = document.createElement('div');
+    header.className = 'msg-header';
 
-    const avatar = document.createElement('div'); avatar.className = 'msg-avatar';
-
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
     avatar.textContent = role === 'user' ? 'You' : 'B';
 
-    const label = document.createElement('div'); label.className = 'msg-label';
-
+    const label = document.createElement('div');
+    label.className = 'msg-label';
     label.textContent = role === 'user' ? 'You' : 'Bluebird';
 
-    header.appendChild(avatar); header.appendChild(label);
+    header.appendChild(avatar);
+    header.appendChild(label);
 
-    const body = document.createElement('div'); body.className = 'msg-body';
-
+    const body = document.createElement('div');
+    body.className = 'msg-body';
     body.textContent = text;
 
-    msg.appendChild(header); msg.appendChild(body);
-
+    msg.appendChild(header);
+    msg.appendChild(body);
     container.appendChild(msg);
-
     container.scrollTop = container.scrollHeight;
-
   }
-
- 
 
   function setLoading(val) {
-
     isLoading = val;
-
     document.getElementById('sendBtn').disabled = val;
-
     document.getElementById('typing').className = val ? 'typing visible' : 'typing';
-
   }
-
- 
 
   const textarea = document.getElementById('userInput');
 
   textarea.addEventListener('input', function() {
-
     this.style.height = 'auto';
-
     this.style.height = Math.min(this.scrollHeight, 140) + 'px';
-
   });
 
   textarea.addEventListener('keydown', function(e) {
-
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   });
 
- 
-
   async function sendMessage() {
-
     if (isLoading) return;
 
     const text = textarea.value.trim();
-
     if (!text) return;
 
-    textarea.value = ''; textarea.style.height = 'auto';
+    textarea.value = '';
+    textarea.style.height = 'auto';
 
     appendMessage('user', text);
-
     setLoading(true);
 
     try {
-
       let res;
 
       if (isGuest) {
-
-        res = await fetch('/api/chat/guest', {
-
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-
-          body: JSON.stringify({ message: text, type: currentType, history: guestHistory, firstName: userFirstName })
-
+        res = await apiFetch('/api/chat/guest', {
+          method: 'POST',
+          body: JSON.stringify({
+            message: text,
+            type: currentType,
+            history: guestHistory,
+            firstName: userFirstName
+          })
         });
-
       } else {
-
-        res = await fetch('/api/chat', {
-
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-
-          body: JSON.stringify({ message: text, type: currentType })
-
+        res = await apiFetch('/api/chat', {
+          method: 'POST',
+          body: JSON.stringify({
+            message: text,
+            type: currentType
+          })
         });
-
       }
 
       const data = await res.json();
-
       setLoading(false);
 
       if (data.reply) {
-
         if (isGuest) {
-
           guestHistory.push({ role: 'user', content: text });
-
           guestHistory.push({ role: 'assistant', content: data.reply });
-
         }
 
         appendMessage('ai', data.reply);
-
       } else {
-
         appendMessage('ai', 'Something went wrong. Please try again.');
-
       }
-
     } catch {
-
       setLoading(false);
-
       appendMessage('ai', 'Something went wrong connecting to Bluebird. Please try again.');
-
     }
-
   }
 
- 
+  document.getElementById('emailInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMagicLink();
+  });
 
-  document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendMagicLink(); });
-
-  document.getElementById('signinPassword').addEventListener('keydown', e => { if (e.key === 'Enter') passwordSignIn(); });
-
+  document.getElementById('signinPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') passwordSignIn();
+  });
 </script>
 
 </body>
-
 </html>
