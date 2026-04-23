@@ -82,7 +82,7 @@
 
   .global-nav {
     width: 100%;
-    max-width: 720px;
+    max-width: 920px;
     padding: 16px 28px 0;
     display: flex;
     justify-content: space-between;
@@ -378,11 +378,6 @@
   .login-note { text-align: center; margin-top: 16px; }
   .error-msg { color: #b65d5d; margin-bottom: 14px; display: none; }
 
-  .success-msg { display: none; text-align: center; padding: 20px; }
-  .success-icon { font-size: 36px; margin-bottom: 12px; }
-  .success-title { font-size: 22px; font-style: italic; font-weight: 300; margin-bottom: 8px; }
-  .success-sub { color: var(--text-soft); }
-
   .input-field {
     width: 100%;
     background: #fff;
@@ -539,14 +534,20 @@
     line-height: 1.6;
   }
 
+  .chat-shell {
+    width: 100%;
+    max-width: 920px;
+    padding: 12px 28px 0;
+  }
+
   .chat-header {
     width: 100%;
-    max-width: 720px;
-    padding: 12px 28px 0;
+    padding: 0 0 12px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
   .chat-type-badge {
@@ -566,22 +567,34 @@
 
   .chat-type-badge:hover { border-color: var(--accent-dim); color: var(--accent); }
 
-  .clear-btn {
+  .chat-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .clear-btn, .jump-btn {
     font-family: 'Jost', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     background: none;
     border: 1px solid var(--border);
-    padding: 5px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
   }
 
-  .clear-btn:hover { color: var(--accent-dim); border-color: var(--accent-dim); }
+  .clear-btn:hover, .jump-btn:hover {
+    color: var(--accent-dim);
+    border-color: var(--accent-dim);
+    background: rgba(61,123,224,0.06);
+  }
 
   .guest-badge {
     font-family: 'Jost', sans-serif;
@@ -589,12 +602,12 @@
     font-weight: 300;
     color: var(--muted);
     font-style: italic;
+    margin-right: 4px;
   }
 
   .chat-divider {
     width: 100%;
-    max-width: 720px;
-    padding: 12px 28px 0;
+    padding: 0 0 14px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -617,18 +630,28 @@
     white-space: nowrap;
   }
 
-  .chat-wrap {
+  .chat-panel {
     width: 100%;
-    max-width: 720px;
-    flex: 1;
+    height: min(72vh, 760px);
+    min-height: 440px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 0 28px;
-    min-height: 320px;
+  }
+
+  .chat-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 10px 28px 0;
+    scroll-behavior: smooth;
   }
 
   .messages {
-    flex: 1;
     display: flex;
     flex-direction: column;
     padding-bottom: 16px;
@@ -701,7 +724,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 22px 0 22px 36px;
+    padding: 10px 0 20px 36px;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -726,21 +749,19 @@
 
   .input-area {
     width: 100%;
-    max-width: 720px;
-    padding: 16px 28px 16px;
+    border-top: 1px solid var(--border);
+    padding: 14px 18px 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    position: sticky;
-    bottom: 0;
-    background: linear-gradient(to bottom, transparent, var(--bg) 25%);
+    background: linear-gradient(180deg, rgba(247,250,255,0.96), rgba(247,250,255,1));
   }
 
   .input-box {
     display: flex;
     gap: 10px;
     align-items: flex-end;
-    background: var(--surface);
+    background: #fff;
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 14px 16px;
@@ -797,7 +818,7 @@
 
   .disclaimer {
     font-family: 'Jost', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
     color: var(--muted);
     text-align: center;
@@ -879,7 +900,7 @@
 
   .page-logo-wrap {
     width: 100%;
-    max-width: 720px;
+    max-width: 920px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -900,7 +921,7 @@
 
   .site-disclaimer {
     width: 100%;
-    max-width: 720px;
+    max-width: 920px;
     padding: 16px 28px 28px;
     font-family: 'Jost', sans-serif;
     font-size: 12px;
@@ -912,24 +933,27 @@
     margin-top: 8px;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 700px) {
     .how-it-works { grid-template-columns: repeat(2, 1fr); padding: 32px 20px 24px; }
+    .type-grid { grid-template-columns: 1fr; }
+    .chat-panel { height: 68vh; min-height: 420px; }
   }
 
   @media (max-width: 520px) {
     .how-it-works { grid-template-columns: 1fr; padding: 32px 20px 24px; }
-    .type-grid { grid-template-columns: 1fr; }
-    .hero, .type-page, .chat-header, .chat-divider, .chat-wrap, .input-area, .global-nav { padding-left: 20px; padding-right: 20px; }
+    .hero, .type-page, .chat-shell, .global-nav { padding-left: 20px; padding-right: 20px; }
     .login-section { padding-left: 20px; padding-right: 20px; }
     .login-card { padding: 28px 20px; }
     .msg-body { font-size: 17px; }
     textarea { font-size: 16px; }
     .site-disclaimer { padding-left: 20px; padding-right: 20px; }
     .page-logo-wrap { padding-left: 20px; padding-right: 20px; }
-    .page-logo-wrap img { height: 200px; }
+    .page-logo-wrap img { height: 180px; }
     .trust-strip { flex-direction: column; max-width: 100%; }
     .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
     .trust-item:last-child { border-bottom: none; }
+    .chat-wrap { padding-left: 20px; padding-right: 20px; }
+    .chat-actions { justify-content: flex-start; }
   }
 </style>
 </head>
@@ -966,9 +990,7 @@
     <div style="font-family:'Jost',sans-serif; font-weight:400; font-size:15px; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:18px;">Conversations That Convert</div>
 
     <h1 class="hero-title">Sales coaching for conversations that build trust, reduce friction, and move business forward</h1>
-
     <p class="hero-sub">Meaningful Calls · Emails & Texts · Negotiating Objections · Dispute Resolution & De-escalation</p>
-
     <p class="hero-copy">Bluebird Sales Coach helps sharpen the way you ask questions, frame value, handle resistance, write with clarity, and respond in high-stakes business situations. Use it to practice customer conversations, improve sales messaging, navigate objections, and de-escalate tension with credible communication.</p>
 
     <div class="trust-strip">
@@ -1041,30 +1063,11 @@
   <div class="login-section">
     <div class="login-card">
       <div class="auth-toggle">
-        <button class="auth-toggle-btn active" id="toggleMagic" onclick="setAuthMode('magic')">Email Link</button>
-        <button class="auth-toggle-btn" id="togglePassword" onclick="setAuthMode('password')">Password</button>
+        <button class="auth-toggle-btn active" id="togglePassword" onclick="setAuthMode('password')">Password</button>
         <button class="auth-toggle-btn" id="toggleGuest" onclick="setAuthMode('guest')">Guest</button>
       </div>
 
-      <div class="auth-panel active" id="panelMagic">
-        <div id="magicLinkForm">
-          <div class="login-title">Start coaching or return to your saved conversations</div>
-          <div class="login-sub">Enter your email and we will send you a secure sign-in link.</div>
-          <div class="login-sub-note">Use an account to save your coaching history by conversation type.</div>
-          <input type="text" id="magicFirstName" class="input-field" placeholder="First name (optional)" />
-          <input type="email" id="emailInput" class="input-field" placeholder="your@email.com" />
-          <button class="primary-btn" id="sendLinkBtn" onclick="sendMagicLink()">Send my login link</button>
-          <div class="login-note">Practice privately, save your threads, and come back to the same coaching area later.</div>
-        </div>
-
-        <div class="success-msg" id="successMsg">
-          <div class="success-icon">✉️</div>
-          <div class="success-title">Check your inbox</div>
-          <div class="success-sub">We sent a login link to <strong id="sentEmail"></strong>.<br>Click it to open Bluebird Sales. The link expires in 15 minutes.</div>
-        </div>
-      </div>
-
-      <div class="auth-panel" id="panelPassword">
+      <div class="auth-panel active" id="panelPassword">
         <div class="pw-tabs">
           <button class="pw-tab active" id="tabSignin" onclick="setPwTab('signin')">Sign In</button>
           <button class="pw-tab" id="tabRegister" onclick="setPwTab('register')">Register</button>
@@ -1077,7 +1080,7 @@
           <input type="email" id="signinEmail" class="input-field" placeholder="your@email.com" />
           <input type="password" id="signinPassword" class="input-field" placeholder="Password" />
           <button class="primary-btn" id="signinBtn" onclick="passwordSignIn()">Sign In</button>
-          <div class="login-note" style="margin-top:14px;">Forgot your password? Use the Email Link option instead.</div>
+          <div class="login-note" style="margin-top:14px;">Use your saved account to keep coaching threads by conversation type.</div>
         </div>
 
         <div id="registerForm" style="display:none;">
@@ -1099,7 +1102,7 @@
         <input type="text" id="guestFirstName" class="input-field" placeholder="First name (optional)" />
         <div class="guest-note" style="text-align:left; margin-bottom:24px;">Guest sessions are private but cannot be saved or resumed later.</div>
         <button class="primary-btn" onclick="confirmGuest()">Start as Guest</button>
-        <button class="guest-btn" onclick="setAuthMode('magic')">← Back to Login</button>
+        <button class="guest-btn" onclick="setAuthMode('password')">← Back to Sign In</button>
       </div>
     </div>
   </div>
@@ -1205,29 +1208,39 @@
     </div>
   </div>
 
-  <div class="chat-header">
-    <div class="chat-type-badge" id="typeBadge" onclick="goToTypeSelector()">Meaningful Calls</div>
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span class="guest-badge" id="guestBadge" style="display:none;">Guest session</span>
-      <button class="clear-btn" id="clearBtn" onclick="promptClearHistory()" style="display:none;">Clear history</button>
-    </div>
-  </div>
+  <div class="chat-shell">
+    <div class="chat-header">
+      <div class="chat-type-badge" id="typeBadge" onclick="goToTypeSelector()">Meaningful Calls</div>
 
-  <div class="chat-divider"><span id="chatDividerLabel">Your coaching thread</span></div>
-
-  <div class="chat-wrap">
-    <div class="messages" id="messages"></div>
-    <div class="typing" id="typing">
-      <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      <div class="chat-actions">
+        <span class="guest-badge" id="guestBadge" style="display:none;">Guest session</span>
+        <button class="jump-btn" type="button" onclick="jumpToTop()">Top</button>
+        <button class="jump-btn" type="button" onclick="jumpToMiddle()">Middle</button>
+        <button class="jump-btn" type="button" onclick="jumpToBottom()">Bottom</button>
+        <button class="clear-btn" id="clearBtn" onclick="promptClearHistory()" style="display:none;">Clear history</button>
+      </div>
     </div>
-  </div>
 
-  <div class="input-area">
-    <div class="input-box">
-      <textarea id="userInput" placeholder="Paste the situation, draft email, objection, tense customer message, or call notes…" rows="1"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+    <div class="chat-divider"><span id="chatDividerLabel">Your coaching thread</span></div>
+
+    <div class="chat-panel">
+      <div class="chat-wrap" id="chatScrollArea">
+        <div class="messages" id="messages"></div>
+        <div class="typing" id="typing">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-box">
+          <textarea id="userInput" placeholder="Paste the situation, draft email, objection, tense customer message, or call notes…" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+        <div class="disclaimer">Bluebird Sales is a communication coach, not a replacement for manager review, legal review, or company policy.</div>
+      </div>
     </div>
-    <div class="disclaimer">Bluebird Sales is a communication coach, not a replacement for manager review, legal review, or company policy.</div>
   </div>
 
   <div class="page-logo-wrap">
@@ -1279,6 +1292,7 @@
 
   async function apiFetch(url, options = {}) {
     const headers = { ...(options.headers || {}) };
+
     if (options.body && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json';
     }
@@ -1362,8 +1376,15 @@
     document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.auth-toggle-btn').forEach(b => b.classList.remove('active'));
 
-    const panelMap = { magic: 'panelMagic', password: 'panelPassword', guest: 'panelGuest' };
-    const btnMap = { magic: 'toggleMagic', password: 'togglePassword', guest: 'toggleGuest' };
+    const panelMap = {
+      password: 'panelPassword',
+      guest: 'panelGuest'
+    };
+
+    const btnMap = {
+      password: 'togglePassword',
+      guest: 'toggleGuest'
+    };
 
     if (panelMap[mode]) document.getElementById(panelMap[mode]).classList.add('active');
     if (btnMap[mode]) document.getElementById(btnMap[mode]).classList.add('active');
@@ -1384,7 +1405,9 @@
     el.style.display = 'block';
   }
 
-  function goToTypeSelector() { showPage('typePage'); }
+  function goToTypeSelector() {
+    showPage('typePage');
+  }
 
   function goHome() {
     if (isGuest || !userEmailAddress) showPage('landingPage');
@@ -1412,6 +1435,7 @@
       if (data.success) {
         document.getElementById('messages').innerHTML = '';
         appendMessage('ai', TYPE_CONFIG[currentType].opening, false);
+        jumpToTop();
       }
     } catch {
       alert('Could not clear conversation. Please try again.');
@@ -1496,40 +1520,6 @@
     }
   }
 
-  async function sendMagicLink() {
-    const firstName = document.getElementById('magicFirstName').value.trim();
-    const email = document.getElementById('emailInput').value.trim();
-
-    if (!email) return;
-
-    const btn = document.getElementById('sendLinkBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-
-    try {
-      const res = await apiFetch('/api/auth/send-link', {
-        method: 'POST',
-        body: JSON.stringify({ email, firstName })
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        document.getElementById('sentEmail').textContent = email;
-        document.getElementById('magicLinkForm').style.display = 'none';
-        document.getElementById('successMsg').style.display = 'block';
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Send my login link';
-        alert('Something went wrong. Please try again.');
-      }
-    } catch {
-      btn.disabled = false;
-      btn.textContent = 'Send my login link';
-      alert('Something went wrong. Please try again.');
-    }
-  }
-
   function confirmGuest() {
     isGuest = true;
     guestHistory = [];
@@ -1543,6 +1533,7 @@
 
   window.addEventListener('load', async () => {
     const params = new URLSearchParams(window.location.search);
+
     if (params.get('error')) {
       showPage('landingPage');
       return;
@@ -1584,13 +1575,8 @@
     userEmailAddress = '';
     currentType = DEFAULT_TYPE;
     document.getElementById('messages').innerHTML = '';
-    document.getElementById('magicLinkForm').style.display = 'block';
-    document.getElementById('successMsg').style.display = 'none';
-    document.getElementById('sendLinkBtn').disabled = false;
-    document.getElementById('sendLinkBtn').textContent = 'Send my login link';
-    document.getElementById('emailInput').value = '';
     document.getElementById('guestBadge').style.display = 'none';
-    setAuthMode('magic');
+    setAuthMode('password');
     showPage('landingPage');
   }
 
@@ -1609,6 +1595,7 @@
     if (isGuest) {
       guestHistory.push({ role: 'assistant', content: config.opening });
       appendMessage('ai', config.opening, false);
+      jumpToTop();
     } else {
       await loadHistory(type);
     }
@@ -1621,12 +1608,14 @@
 
       if (data.messages && data.messages.length > 0) {
         data.messages.forEach(m => appendMessage(m.role === 'assistant' ? 'ai' : 'user', m.content, false));
-        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        jumpToBottom(false);
       } else {
         appendMessage('ai', TYPE_CONFIG[type].opening, false);
+        jumpToTop();
       }
     } catch {
       appendMessage('ai', TYPE_CONFIG[type]?.opening || 'Welcome back. What would you like to work on today?', false);
+      jumpToTop();
     }
   }
 
@@ -1657,13 +1646,32 @@
     msg.appendChild(header);
     msg.appendChild(body);
     container.appendChild(msg);
-    container.scrollTop = container.scrollHeight;
   }
 
   function setLoading(val) {
     isLoading = val;
     document.getElementById('sendBtn').disabled = val;
     document.getElementById('typing').className = val ? 'typing visible' : 'typing';
+  }
+
+  function getChatScrollArea() {
+    return document.getElementById('chatScrollArea');
+  }
+
+  function jumpToTop(smooth = true) {
+    const el = getChatScrollArea();
+    el.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  function jumpToMiddle(smooth = true) {
+    const el = getChatScrollArea();
+    const middle = Math.max(0, (el.scrollHeight - el.clientHeight) / 2);
+    el.scrollTo({ top: middle, behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  function jumpToBottom(smooth = true) {
+    const el = getChatScrollArea();
+    el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
   }
 
   const textarea = document.getElementById('userInput');
@@ -1690,6 +1698,7 @@
     textarea.style.height = 'auto';
 
     appendMessage('user', text);
+    jumpToBottom(false);
     setLoading(true);
 
     try {
@@ -1725,18 +1734,17 @@
         }
 
         appendMessage('ai', data.reply);
+        jumpToBottom();
       } else {
         appendMessage('ai', 'Something went wrong. Please try again.');
+        jumpToBottom();
       }
     } catch {
       setLoading(false);
       appendMessage('ai', 'Something went wrong connecting to Bluebird. Please try again.');
+      jumpToBottom();
     }
   }
-
-  document.getElementById('emailInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') sendMagicLink();
-  });
 
   document.getElementById('signinPassword').addEventListener('keydown', e => {
     if (e.key === 'Enter') passwordSignIn();
