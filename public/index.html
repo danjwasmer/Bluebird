@@ -1217,6 +1217,7 @@
         <button class="jump-btn" type="button" onclick="jumpToTop()">Top</button>
         <button class="jump-btn" type="button" onclick="jumpToMiddle()">Middle</button>
         <button class="jump-btn" type="button" onclick="jumpToBottom()">Bottom</button>
+        <button class="jump-btn" id="copyConversationBtn" type="button" onclick="copyConversation()">Copy Conversation</button>
         <button class="clear-btn" id="clearBtn" onclick="promptClearHistory()" style="display:none;">Clear history</button>
       </div>
     </div>
@@ -1672,6 +1673,63 @@
   function jumpToBottom(smooth = true) {
     const el = getChatScrollArea();
     el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  function buildConversationText() {
+    const messages = Array.from(document.querySelectorAll('#messages .msg'));
+    const typeLabel = TYPE_CONFIG[currentType]?.label || currentType;
+
+    const parts = [
+      'Bluebird Sales Coach',
+      `Conversation Type: ${typeLabel}`,
+      ''
+    ];
+
+    for (const msg of messages) {
+      const label = msg.querySelector('.msg-label')?.textContent?.trim() || 'Message';
+      const body = msg.querySelector('.msg-body')?.textContent?.trim() || '';
+      parts.push(`${label}:`);
+      parts.push(body);
+      parts.push('');
+    }
+
+    return parts.join('\n');
+  }
+
+  async function copyConversation() {
+    const btn = document.getElementById('copyConversationBtn');
+    const originalText = btn.textContent;
+    const text = buildConversationText();
+
+    if (!text.trim()) {
+      btn.textContent = 'Nothing to Copy';
+      setTimeout(() => { btn.textContent = originalText; }, 1400);
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = originalText; }, 1400);
+    } catch {
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.textContent = originalText; }, 1400);
+      } catch {
+        btn.textContent = 'Copy Failed';
+        setTimeout(() => { btn.textContent = originalText; }, 1600);
+      }
+    }
   }
 
   const textarea = document.getElementById('userInput');
