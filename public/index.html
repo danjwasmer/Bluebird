@@ -475,6 +475,32 @@
     border-radius: 6px;
   }
 
+  .prefs-field {
+    margin-bottom: 14px;
+  }
+
+  .prefs-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 4px;
+  }
+
+  .prefs-sub-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  #preferencesModal .input-field {
+    margin-bottom: 0;
+  }
+
   .primary-btn {
     width: 100%;
     background: linear-gradient(180deg, var(--accent), var(--accent-dim));
@@ -977,10 +1003,6 @@
 
   .modal-confirm:hover { background: var(--accent); }
 
-  #preferencesModal .input-field {
-    margin-bottom: 12px;
-  }
-
   .page-logo-wrap {
     width: 100%;
     max-width: 920px;
@@ -1072,46 +1094,80 @@
       Could not save preferences. Please try again.
     </div>
 
-    <input type="text" id="prefJobTitle" class="input-field" placeholder="Job title (optional)" />
-    <input type="text" id="prefIndustry" class="input-field" placeholder="Industry (optional)" />
+    <div class="prefs-field">
+      <div class="prefs-label">Job Title</div>
+      <input type="text" id="prefJobTitle" class="input-field" placeholder="Optional" />
+    </div>
 
-    <select id="prefCommunicationStyle" class="input-field multi-select" multiple size="6">
-      <option value="Direct and concise">Direct and concise</option>
-      <option value="Warm and consultative">Warm and consultative</option>
-      <option value="Confident and executive">Confident and executive</option>
-      <option value="Calm and diplomatic">Calm and diplomatic</option>
-      <option value="Persuasive but low-pressure">Persuasive but low-pressure</option>
-      <option value="Friendly and conversational">Friendly and conversational</option>
-    </select>
+    <div class="prefs-field">
+      <div class="prefs-label">Industry</div>
+      <input type="text" id="prefIndustry" class="input-field" placeholder="Optional" />
+    </div>
 
-    <select id="prefPrimaryGoal" class="input-field multi-select" multiple size="6">
-      <option value="Improve discovery conversations">Improve discovery conversations</option>
-      <option value="Write stronger emails and texts">Write stronger emails and texts</option>
-      <option value="Handle objections more effectively">Handle objections more effectively</option>
-      <option value="Negotiate without discounting too quickly">Negotiate without discounting too quickly</option>
-      <option value="De-escalate tense customer situations">De-escalate tense customer situations</option>
-      <option value="Sound more confident and credible">Sound more confident and credible</option>
-    </select>
+    <div class="prefs-field">
+      <div class="prefs-label">Communication Style</div>
+      <div class="prefs-sub-label">Select all that apply</div>
+      <select id="prefCommunicationStyle" class="input-field multi-select" multiple size="8">
+        <option value="Direct and concise">Direct and concise</option>
+        <option value="Warm and consultative">Warm and consultative</option>
+        <option value="Confident and executive">Confident and executive</option>
+        <option value="Calm and diplomatic">Calm and diplomatic</option>
+        <option value="Persuasive but low-pressure">Persuasive but low-pressure</option>
+        <option value="Friendly and conversational">Friendly and conversational</option>
+        <option value="Analytical and structured">Analytical and structured</option>
+        <option value="Assertive and commercially firm">Assertive and commercially firm</option>
+      </select>
+    </div>
 
-    <select id="prefHelpfulPreferences" class="input-field multi-select" multiple size="6">
-      <option value="Keep responses concise">Keep responses concise</option>
-      <option value="Give me specific wording">Give me specific wording</option>
-      <option value="Prioritize practical next steps">Prioritize practical next steps</option>
-      <option value="Explain the reasoning behind the advice">Explain the reasoning behind the advice</option>
-      <option value="Challenge me directly when my approach is weak">Challenge me directly when my approach is weak</option>
-      <option value="Focus on talk tracks I can use immediately">Focus on talk tracks I can use immediately</option>
-    </select>
+    <div class="prefs-field">
+      <div class="prefs-label">Primary Goal</div>
+      <div class="prefs-sub-label">Select all that apply</div>
+      <select id="prefPrimaryGoal" class="input-field multi-select" multiple size="8">
+        <option value="Improve discovery conversations">Improve discovery conversations</option>
+        <option value="Write stronger emails and texts">Write stronger emails and texts</option>
+        <option value="Handle objections more effectively">Handle objections more effectively</option>
+        <option value="Negotiate without discounting too quickly">Negotiate without discounting too quickly</option>
+        <option value="De-escalate tense customer situations">De-escalate tense customer situations</option>
+        <option value="Sound more confident and credible">Sound more confident and credible</option>
+        <option value="Ask stronger follow-up questions">Ask stronger follow-up questions</option>
+        <option value="Improve executive-level communication">Improve executive-level communication</option>
+      </select>
+    </div>
 
-    <select id="prefThingsToAvoid" class="input-field multi-select" multiple size="6">
-      <option value="Avoid aggressive pressure tactics">Avoid aggressive pressure tactics</option>
-      <option value="Avoid generic sales advice">Avoid generic sales advice</option>
-      <option value="Avoid recommending discounting first">Avoid recommending discounting first</option>
-      <option value="Avoid long-winded explanations">Avoid long-winded explanations</option>
-      <option value="Avoid overly corporate jargon">Avoid overly corporate jargon</option>
-      <option value="Avoid sounding scripted or robotic">Avoid sounding scripted or robotic</option>
-    </select>
+    <div class="prefs-field">
+      <div class="prefs-label">Coaching Preferences</div>
+      <div class="prefs-sub-label">Select all that apply</div>
+      <select id="prefHelpfulPreferences" class="input-field multi-select" multiple size="8">
+        <option value="Keep responses concise">Keep responses concise</option>
+        <option value="Give me specific wording">Give me specific wording</option>
+        <option value="Prioritize practical next steps">Prioritize practical next steps</option>
+        <option value="Explain the reasoning behind the advice">Explain the reasoning behind the advice</option>
+        <option value="Challenge me directly when my approach is weak">Challenge me directly when my approach is weak</option>
+        <option value="Focus on talk tracks I can use immediately">Focus on talk tracks I can use immediately</option>
+        <option value="Show me stronger rewrite options">Show me stronger rewrite options</option>
+        <option value="Point out risk in my messaging">Point out risk in my messaging</option>
+      </select>
+    </div>
 
-    <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your customers, or how you like to work? (optional)"></textarea>
+    <div class="prefs-field">
+      <div class="prefs-label">Things to Avoid</div>
+      <div class="prefs-sub-label">Select all that apply</div>
+      <select id="prefThingsToAvoid" class="input-field multi-select" multiple size="8">
+        <option value="Avoid aggressive pressure tactics">Avoid aggressive pressure tactics</option>
+        <option value="Avoid generic sales advice">Avoid generic sales advice</option>
+        <option value="Avoid recommending discounting first">Avoid recommending discounting first</option>
+        <option value="Avoid long-winded explanations">Avoid long-winded explanations</option>
+        <option value="Avoid overly corporate jargon">Avoid overly corporate jargon</option>
+        <option value="Avoid sounding scripted or robotic">Avoid sounding scripted or robotic</option>
+        <option value="Avoid vague filler language">Avoid vague filler language</option>
+        <option value="Avoid weak or passive calls to action">Avoid weak or passive calls to action</option>
+      </select>
+    </div>
+
+    <div class="prefs-field">
+      <div class="prefs-label">Additional Context</div>
+      <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your customers, or how you like to work?"></textarea>
+    </div>
 
     <div class="modal-actions" style="margin-top: 8px;">
       <button class="modal-cancel" onclick="closePreferencesModal()">Close</button>
@@ -1733,6 +1789,11 @@
       userPreferencesLoaded = true;
       populatePreferencesForm(userPreferences);
       document.getElementById('preferencesSavedMsg').style.display = 'block';
+
+      setTimeout(() => {
+        closePreferencesModal();
+        hidePreferencesMessages();
+      }, 500);
     } catch (err) {
       console.error('Save preferences error:', err);
       document.getElementById('preferencesErrorMsg').style.display = 'block';
