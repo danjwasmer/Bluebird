@@ -427,7 +427,7 @@
     line-height: 1.3;
   }
 
-  .login-sub, .login-sub-note, .guest-note, .login-note, .error-msg, .success-sub {
+  .login-sub, .login-sub-note, .guest-note, .login-note, .error-msg, .success-sub, .prefs-help {
     font-family: 'Jost', sans-serif;
     font-size: 15px;
     font-weight: 300;
@@ -435,7 +435,7 @@
   }
 
   .login-sub { color: var(--text-soft); margin-bottom: 4px; }
-  .login-sub-note, .guest-note, .login-note { color: var(--muted); }
+  .login-sub-note, .guest-note, .login-note, .prefs-help { color: var(--muted); }
   .login-sub-note { margin-bottom: 24px; font-style: italic; }
   .guest-note { text-align: center; margin-top: 10px; font-style: italic; }
   .login-note { text-align: center; margin-top: 16px; }
@@ -458,6 +458,22 @@
 
   .input-field:focus { border-color: var(--accent-dim); }
   .input-field::placeholder { color: var(--muted); font-size: 15px; }
+
+  select.input-field {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .multi-select {
+    min-height: 140px;
+    padding: 10px 12px;
+  }
+
+  .multi-select option {
+    padding: 8px 10px;
+    border-radius: 6px;
+  }
 
   .primary-btn {
     width: 100%;
@@ -1040,8 +1056,12 @@
 <div class="modal-overlay" id="preferencesModal">
   <div class="modal" style="max-width: 640px; text-align: left;">
     <div class="modal-title">My Preferences</div>
-    <div class="modal-body" style="margin-bottom:20px;">
+    <div class="modal-body" style="margin-bottom:14px;">
       Share anything you want Bluebird to keep in mind when coaching you. This is optional and only used to tailor advice for your logged-in account.
+    </div>
+
+    <div class="prefs-help" style="margin-bottom:18px;">
+      You can select multiple options in the dropdowns below. On desktop, use Ctrl or Command while clicking. On mobile, tap multiple options in the list.
     </div>
 
     <div id="preferencesSavedMsg" style="display:none; margin-bottom:16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--accent-dim);">
@@ -1055,8 +1075,7 @@
     <input type="text" id="prefJobTitle" class="input-field" placeholder="Job title (optional)" />
     <input type="text" id="prefIndustry" class="input-field" placeholder="Industry (optional)" />
 
-    <select id="prefCommunicationStyle" class="input-field">
-      <option value="">Communication Style (optional)</option>
+    <select id="prefCommunicationStyle" class="input-field multi-select" multiple size="6">
       <option value="Direct and concise">Direct and concise</option>
       <option value="Warm and consultative">Warm and consultative</option>
       <option value="Confident and executive">Confident and executive</option>
@@ -1065,8 +1084,7 @@
       <option value="Friendly and conversational">Friendly and conversational</option>
     </select>
 
-    <select id="prefPrimaryGoal" class="input-field">
-      <option value="">Primary Goal (optional)</option>
+    <select id="prefPrimaryGoal" class="input-field multi-select" multiple size="6">
       <option value="Improve discovery conversations">Improve discovery conversations</option>
       <option value="Write stronger emails and texts">Write stronger emails and texts</option>
       <option value="Handle objections more effectively">Handle objections more effectively</option>
@@ -1075,8 +1093,7 @@
       <option value="Sound more confident and credible">Sound more confident and credible</option>
     </select>
 
-    <select id="prefHelpfulPreferences" class="input-field">
-      <option value="">Coaching Preferences (optional)</option>
+    <select id="prefHelpfulPreferences" class="input-field multi-select" multiple size="6">
       <option value="Keep responses concise">Keep responses concise</option>
       <option value="Give me specific wording">Give me specific wording</option>
       <option value="Prioritize practical next steps">Prioritize practical next steps</option>
@@ -1085,8 +1102,7 @@
       <option value="Focus on talk tracks I can use immediately">Focus on talk tracks I can use immediately</option>
     </select>
 
-    <select id="prefThingsToAvoid" class="input-field">
-      <option value="">Things to Avoid (optional)</option>
+    <select id="prefThingsToAvoid" class="input-field multi-select" multiple size="6">
       <option value="Avoid aggressive pressure tactics">Avoid aggressive pressure tactics</option>
       <option value="Avoid generic sales advice">Avoid generic sales advice</option>
       <option value="Avoid recommending discounting first">Avoid recommending discounting first</option>
@@ -1391,6 +1407,7 @@
 
 <script>
   const DEFAULT_TYPE = 'meaningful_calls';
+  const MULTI_VALUE_DELIMITER = ' || ';
 
   let isLoading = false;
   let currentType = DEFAULT_TYPE;
@@ -1446,13 +1463,29 @@
     });
   }
 
-  function arrayFirstValue(arr) {
-    return Array.isArray(arr) && arr.length ? arr[0] : '';
+  function selectedOptionsToArray(selectId) {
+    const el = document.getElementById(selectId);
+    return Array.from(el.selectedOptions)
+      .map(option => option.value)
+      .filter(Boolean);
   }
 
-  function selectValueToArray(value) {
-    const clean = String(value || '').trim();
-    return clean ? [clean] : [];
+  function setMultiSelectValues(selectId, values) {
+    const el = document.getElementById(selectId);
+    const selectedValues = Array.isArray(values)
+      ? values
+      : String(values || '')
+          .split(MULTI_VALUE_DELIMITER)
+          .map(v => v.trim())
+          .filter(Boolean);
+
+    Array.from(el.options).forEach(option => {
+      option.selected = selectedValues.includes(option.value);
+    });
+  }
+
+  function joinMultiValuesForStringField(selectId) {
+    return selectedOptionsToArray(selectId).join(MULTI_VALUE_DELIMITER);
   }
 
   function populatePreferencesForm(data = {}) {
@@ -1460,10 +1493,10 @@
 
     document.getElementById('prefJobTitle').value = prefs.jobTitle || '';
     document.getElementById('prefIndustry').value = prefs.industry || '';
-    document.getElementById('prefCommunicationStyle').value = prefs.communicationStyle || '';
-    document.getElementById('prefPrimaryGoal').value = prefs.primaryGoal || '';
-    document.getElementById('prefHelpfulPreferences').value = arrayFirstValue(prefs.preferences);
-    document.getElementById('prefThingsToAvoid').value = arrayFirstValue(prefs.thingsToAvoid);
+    setMultiSelectValues('prefCommunicationStyle', prefs.communicationStyle);
+    setMultiSelectValues('prefPrimaryGoal', prefs.primaryGoal);
+    setMultiSelectValues('prefHelpfulPreferences', prefs.preferences);
+    setMultiSelectValues('prefThingsToAvoid', prefs.thingsToAvoid);
     document.getElementById('prefProfileContext').value = data.profileContext || '';
   }
 
@@ -1473,10 +1506,10 @@
       preferences: {
         jobTitle: document.getElementById('prefJobTitle').value.trim(),
         industry: document.getElementById('prefIndustry').value.trim(),
-        communicationStyle: document.getElementById('prefCommunicationStyle').value,
-        primaryGoal: document.getElementById('prefPrimaryGoal').value,
-        preferences: selectValueToArray(document.getElementById('prefHelpfulPreferences').value),
-        thingsToAvoid: selectValueToArray(document.getElementById('prefThingsToAvoid').value)
+        communicationStyle: joinMultiValuesForStringField('prefCommunicationStyle'),
+        primaryGoal: joinMultiValuesForStringField('prefPrimaryGoal'),
+        preferences: selectedOptionsToArray('prefHelpfulPreferences'),
+        thingsToAvoid: selectedOptionsToArray('prefThingsToAvoid')
       }
     };
   }
