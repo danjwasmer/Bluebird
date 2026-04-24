@@ -943,19 +943,22 @@
     line-height: 1.6;
   }
 
+  /* ── Modal overlay: scrollable sheet ── */
   .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
     background: rgba(19,42,74,0.4);
     z-index: 100;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 28px;
+    overflow-y: auto;
   }
 
   .modal-overlay.active { display: flex; }
 
+  /* ── Base modal: centered on short viewports via margin:auto ── */
   .modal {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -965,6 +968,7 @@
     width: 100%;
     box-shadow: var(--shadow);
     text-align: center;
+    margin: auto;
   }
 
   .modal-title {
@@ -1072,6 +1076,7 @@
     .trust-item:last-child { border-bottom: none; }
     .chat-wrap { padding-left: 20px; padding-right: 20px; }
     .chat-actions { justify-content: flex-start; }
+    .modal-overlay { padding: 16px; }
   }
 </style>
 </head>
@@ -1089,7 +1094,7 @@
 </div>
 
 <div class="modal-overlay" id="preferencesModal">
-  <div class="modal" style="max-width: 640px; text-align: left;">
+  <div class="modal" style="max-width: 640px; text-align: left; max-height: calc(100dvh - 56px); overflow-y: auto; display: flex; flex-direction: column;">
     <div class="modal-title">My Preferences</div>
     <div class="modal-body" style="margin-bottom:14px;">
       Share anything you want Bluebird to keep in mind when coaching you. This is optional and only used to tailor advice for your logged-in account.
