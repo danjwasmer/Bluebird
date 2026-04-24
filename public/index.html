@@ -961,6 +961,10 @@
 
   .modal-confirm:hover { background: var(--accent); }
 
+  #preferencesModal .input-field {
+    margin-bottom: 12px;
+  }
+
   .page-logo-wrap {
     width: 100%;
     max-width: 920px;
@@ -1029,6 +1033,40 @@
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
       <button class="modal-confirm" onclick="confirmClear()">Yes, clear it</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="preferencesModal">
+  <div class="modal" style="max-width: 640px; text-align: left;">
+    <div class="modal-title">My Preferences</div>
+    <div class="modal-body" style="margin-bottom:20px;">
+      Share anything you want Bluebird to keep in mind when coaching you. This is optional and only used to tailor advice for your logged-in account.
+    </div>
+
+    <div id="preferencesSavedMsg" style="display:none; margin-bottom:16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--accent-dim);">
+      Preferences saved.
+    </div>
+
+    <div id="preferencesErrorMsg" style="display:none; margin-bottom:16px; font-family:'Jost',sans-serif; font-size:14px; color:#b65d5d;">
+      Could not save preferences. Please try again.
+    </div>
+
+    <input type="text" id="prefJobTitle" class="input-field" placeholder="Job title (optional)" />
+    <input type="text" id="prefIndustry" class="input-field" placeholder="Industry (optional)" />
+    <input type="text" id="prefSalesMotion" class="input-field" placeholder="Sales motion (optional)" />
+    <input type="text" id="prefCommunicationStyle" class="input-field" placeholder="Communication style (optional)" />
+    <input type="text" id="prefPrimaryGoal" class="input-field" placeholder="Primary goal (optional)" />
+
+    <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your sales environment, or how you like to work? (optional)"></textarea>
+
+    <textarea id="prefHelpfulPreferences" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Coaching preferences (optional)&#10;One per line, for example:&#10;Keep responses concise&#10;Give me specific wording&#10;Use direct language"></textarea>
+
+    <textarea id="prefThingsToAvoid" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Things to avoid in advice (optional)&#10;One per line, for example:&#10;Avoid pushy sales tactics&#10;Do not recommend discounting first"></textarea>
+
+    <div class="modal-actions" style="margin-top: 8px;">
+      <button class="modal-cancel" onclick="closePreferencesModal()">Close</button>
+      <button class="modal-confirm" id="savePreferencesBtn" onclick="savePreferences()">Save Preferences</button>
     </div>
   </div>
 </div>
@@ -1187,6 +1225,7 @@
     </div>
     <div class="global-nav-right">
       <button class="nav-btn" onclick="goHome()">Home</button>
+      <button class="nav-btn" id="typePrefsBtn" style="display:none;" onclick="openPreferencesModal()">My Preferences</button>
       <button class="nav-btn" id="typeSignoutBtn" onclick="signOut()">Sign out</button>
     </div>
   </div>
@@ -1267,6 +1306,7 @@
     </div>
     <div class="global-nav-right">
       <button class="nav-btn" onclick="goHome()">Home</button>
+      <button class="nav-btn" id="chatPrefsBtn" style="display:none;" onclick="openPreferencesModal()">My Preferences</button>
       <button class="nav-btn" id="chatSignoutBtn" onclick="signOut()">Sign out</button>
     </div>
   </div>
@@ -1325,6 +1365,11 @@
   let userFirstName = '';
   let isGuest = false;
   let guestHistory = [];
+  let userPreferencesLoaded = false;
+  let userPreferences = {
+    profileContext: '',
+    preferences: {}
+  };
 
   const TYPE_CONFIG = {
     meaningful_calls: {
@@ -1366,6 +1411,50 @@
       ...options,
       headers
     });
+  }
+
+  function preferenceLinesToArray(text) {
+    return String(text || '')
+      .split('\n')
+      .map(v => v.trim())
+      .filter(Boolean);
+  }
+
+  function preferenceArrayToLines(arr) {
+    return Array.isArray(arr) ? arr.join('\n') : '';
+  }
+
+  function populatePreferencesForm(data = {}) {
+    const prefs = data.preferences || {};
+
+    document.getElementById('prefJobTitle').value = prefs.jobTitle || '';
+    document.getElementById('prefIndustry').value = prefs.industry || '';
+    document.getElementById('prefSalesMotion').value = prefs.salesMotion || '';
+    document.getElementById('prefCommunicationStyle').value = prefs.communicationStyle || '';
+    document.getElementById('prefPrimaryGoal').value = prefs.primaryGoal || '';
+    document.getElementById('prefProfileContext').value = data.profileContext || '';
+    document.getElementById('prefHelpfulPreferences').value = preferenceArrayToLines(prefs.preferences);
+    document.getElementById('prefThingsToAvoid').value = preferenceArrayToLines(prefs.thingsToAvoid);
+  }
+
+  function collectPreferencesForm() {
+    return {
+      profileContext: document.getElementById('prefProfileContext').value.trim(),
+      preferences: {
+        jobTitle: document.getElementById('prefJobTitle').value.trim(),
+        industry: document.getElementById('prefIndustry').value.trim(),
+        salesMotion: document.getElementById('prefSalesMotion').value.trim(),
+        communicationStyle: document.getElementById('prefCommunicationStyle').value.trim(),
+        primaryGoal: document.getElementById('prefPrimaryGoal').value.trim(),
+        preferences: preferenceLinesToArray(document.getElementById('prefHelpfulPreferences').value),
+        thingsToAvoid: preferenceLinesToArray(document.getElementById('prefThingsToAvoid').value)
+      }
+    };
+  }
+
+  function hidePreferencesMessages() {
+    document.getElementById('preferencesSavedMsg').style.display = 'none';
+    document.getElementById('preferencesErrorMsg').style.display = 'none';
   }
 
   function showPage(name) {
@@ -1424,6 +1513,15 @@
     }
   }
 
+  function updatePreferencesButtons() {
+    const show = !!userEmailAddress && !isGuest;
+
+    ['typePrefsBtn', 'chatPrefsBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'inline-block' : 'none';
+    });
+  }
+
   function updateSignoutButtons() {
     const label = isGuest ? 'Exit' : 'Sign out';
 
@@ -1434,6 +1532,8 @@
 
     const lb = document.getElementById('landingSignoutBtn');
     if (lb) lb.style.display = (!isGuest && userEmailAddress) ? 'inline-block' : 'none';
+
+    updatePreferencesButtons();
   }
 
   function setAuthMode(mode) {
@@ -1510,6 +1610,80 @@
     if (e.target === this) closeModal();
   });
 
+  async function loadPreferences(force = false) {
+    if (!userEmailAddress || isGuest) return;
+    if (userPreferencesLoaded && !force) return;
+
+    try {
+      const res = await apiFetch('/api/preferences');
+      const data = await res.json();
+
+      userPreferences = {
+        profileContext: data.profileContext || '',
+        preferences: data.preferences || {}
+      };
+
+      userPreferencesLoaded = true;
+      populatePreferencesForm(userPreferences);
+    } catch (err) {
+      console.error('Load preferences error:', err);
+    }
+  }
+
+  async function openPreferencesModal() {
+    if (!userEmailAddress || isGuest) return;
+
+    hidePreferencesMessages();
+    await loadPreferences();
+    document.getElementById('preferencesModal').classList.add('active');
+  }
+
+  function closePreferencesModal() {
+    document.getElementById('preferencesModal').classList.remove('active');
+  }
+
+  async function savePreferences() {
+    hidePreferencesMessages();
+
+    const btn = document.getElementById('savePreferencesBtn');
+    const payload = collectPreferencesForm();
+
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    try {
+      const res = await apiFetch('/api/preferences', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to save preferences');
+      }
+
+      userPreferences = {
+        profileContext: data.profileContext || '',
+        preferences: data.preferences || {}
+      };
+
+      userPreferencesLoaded = true;
+      populatePreferencesForm(userPreferences);
+      document.getElementById('preferencesSavedMsg').style.display = 'block';
+    } catch (err) {
+      console.error('Save preferences error:', err);
+      document.getElementById('preferencesErrorMsg').style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save Preferences';
+    }
+  }
+
+  document.getElementById('preferencesModal').addEventListener('click', function(e) {
+    if (e.target === this) closePreferencesModal();
+  });
+
   async function passwordSignIn() {
     const email = document.getElementById('signinEmail').value.trim();
     const password = document.getElementById('signinPassword').value;
@@ -1533,6 +1707,7 @@
         userEmailAddress = email;
         userFirstName = data.firstName || '';
         showPage('typePage');
+        await loadPreferences(true);
       } else {
         showError('signinError', data.error || 'Sign in failed.');
         btn.disabled = false;
@@ -1572,6 +1747,7 @@
         userEmailAddress = email;
         userFirstName = firstName;
         showPage('typePage');
+        await loadPreferences(true);
       } else {
         showError('registerError', data.error || 'Registration failed.');
         btn.disabled = false;
@@ -1590,6 +1766,8 @@
     userFirstName = document.getElementById('guestFirstName').value.trim();
     userEmailAddress = '';
     currentType = DEFAULT_TYPE;
+    userPreferencesLoaded = false;
+    userPreferences = { profileContext: '', preferences: {} };
     document.getElementById('guestBadge').style.display = 'inline';
     document.getElementById('clearBtn').style.display = 'none';
     showPage('typePage');
@@ -1612,6 +1790,7 @@
         userEmailAddress = data.email;
         userFirstName = data.firstName || '';
         showPage('typePage');
+        await loadPreferences();
       } else {
         showPage('landingPage');
       }
@@ -1626,8 +1805,11 @@
       guestHistory = [];
       userFirstName = '';
       currentType = DEFAULT_TYPE;
+      userPreferencesLoaded = false;
+      userPreferences = { profileContext: '', preferences: {} };
       document.getElementById('messages').innerHTML = '';
       document.getElementById('guestBadge').style.display = 'none';
+      closePreferencesModal();
       showPage('landingPage');
       return;
     }
@@ -1638,8 +1820,11 @@
     userFirstName = '';
     userEmailAddress = '';
     currentType = DEFAULT_TYPE;
+    userPreferencesLoaded = false;
+    userPreferences = { profileContext: '', preferences: {} };
     document.getElementById('messages').innerHTML = '';
     document.getElementById('guestBadge').style.display = 'none';
+    closePreferencesModal();
     setAuthMode('password');
     showPage('landingPage');
   }
