@@ -1054,15 +1054,48 @@
 
     <input type="text" id="prefJobTitle" class="input-field" placeholder="Job title (optional)" />
     <input type="text" id="prefIndustry" class="input-field" placeholder="Industry (optional)" />
-    <input type="text" id="prefSalesMotion" class="input-field" placeholder="Sales motion (optional)" />
-    <input type="text" id="prefCommunicationStyle" class="input-field" placeholder="Communication style (optional)" />
-    <input type="text" id="prefPrimaryGoal" class="input-field" placeholder="Primary goal (optional)" />
 
-    <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your sales environment, or how you like to work? (optional)"></textarea>
+    <select id="prefCommunicationStyle" class="input-field">
+      <option value="">Communication Style (optional)</option>
+      <option value="Direct and concise">Direct and concise</option>
+      <option value="Warm and consultative">Warm and consultative</option>
+      <option value="Confident and executive">Confident and executive</option>
+      <option value="Calm and diplomatic">Calm and diplomatic</option>
+      <option value="Persuasive but low-pressure">Persuasive but low-pressure</option>
+      <option value="Friendly and conversational">Friendly and conversational</option>
+    </select>
 
-    <textarea id="prefHelpfulPreferences" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Coaching preferences (optional)&#10;One per line, for example:&#10;Keep responses concise&#10;Give me specific wording&#10;Use direct language"></textarea>
+    <select id="prefPrimaryGoal" class="input-field">
+      <option value="">Primary Goal (optional)</option>
+      <option value="Improve discovery conversations">Improve discovery conversations</option>
+      <option value="Write stronger emails and texts">Write stronger emails and texts</option>
+      <option value="Handle objections more effectively">Handle objections more effectively</option>
+      <option value="Negotiate without discounting too quickly">Negotiate without discounting too quickly</option>
+      <option value="De-escalate tense customer situations">De-escalate tense customer situations</option>
+      <option value="Sound more confident and credible">Sound more confident and credible</option>
+    </select>
 
-    <textarea id="prefThingsToAvoid" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Things to avoid in advice (optional)&#10;One per line, for example:&#10;Avoid pushy sales tactics&#10;Do not recommend discounting first"></textarea>
+    <select id="prefHelpfulPreferences" class="input-field">
+      <option value="">Coaching Preferences (optional)</option>
+      <option value="Keep responses concise">Keep responses concise</option>
+      <option value="Give me specific wording">Give me specific wording</option>
+      <option value="Prioritize practical next steps">Prioritize practical next steps</option>
+      <option value="Explain the reasoning behind the advice">Explain the reasoning behind the advice</option>
+      <option value="Challenge me directly when my approach is weak">Challenge me directly when my approach is weak</option>
+      <option value="Focus on talk tracks I can use immediately">Focus on talk tracks I can use immediately</option>
+    </select>
+
+    <select id="prefThingsToAvoid" class="input-field">
+      <option value="">Things to Avoid (optional)</option>
+      <option value="Avoid aggressive pressure tactics">Avoid aggressive pressure tactics</option>
+      <option value="Avoid generic sales advice">Avoid generic sales advice</option>
+      <option value="Avoid recommending discounting first">Avoid recommending discounting first</option>
+      <option value="Avoid long-winded explanations">Avoid long-winded explanations</option>
+      <option value="Avoid overly corporate jargon">Avoid overly corporate jargon</option>
+      <option value="Avoid sounding scripted or robotic">Avoid sounding scripted or robotic</option>
+    </select>
+
+    <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your customers, or how you like to work? (optional)"></textarea>
 
     <div class="modal-actions" style="margin-top: 8px;">
       <button class="modal-cancel" onclick="closePreferencesModal()">Close</button>
@@ -1413,15 +1446,13 @@
     });
   }
 
-  function preferenceLinesToArray(text) {
-    return String(text || '')
-      .split('\n')
-      .map(v => v.trim())
-      .filter(Boolean);
+  function arrayFirstValue(arr) {
+    return Array.isArray(arr) && arr.length ? arr[0] : '';
   }
 
-  function preferenceArrayToLines(arr) {
-    return Array.isArray(arr) ? arr.join('\n') : '';
+  function selectValueToArray(value) {
+    const clean = String(value || '').trim();
+    return clean ? [clean] : [];
   }
 
   function populatePreferencesForm(data = {}) {
@@ -1429,12 +1460,11 @@
 
     document.getElementById('prefJobTitle').value = prefs.jobTitle || '';
     document.getElementById('prefIndustry').value = prefs.industry || '';
-    document.getElementById('prefSalesMotion').value = prefs.salesMotion || '';
     document.getElementById('prefCommunicationStyle').value = prefs.communicationStyle || '';
     document.getElementById('prefPrimaryGoal').value = prefs.primaryGoal || '';
+    document.getElementById('prefHelpfulPreferences').value = arrayFirstValue(prefs.preferences);
+    document.getElementById('prefThingsToAvoid').value = arrayFirstValue(prefs.thingsToAvoid);
     document.getElementById('prefProfileContext').value = data.profileContext || '';
-    document.getElementById('prefHelpfulPreferences').value = preferenceArrayToLines(prefs.preferences);
-    document.getElementById('prefThingsToAvoid').value = preferenceArrayToLines(prefs.thingsToAvoid);
   }
 
   function collectPreferencesForm() {
@@ -1443,11 +1473,10 @@
       preferences: {
         jobTitle: document.getElementById('prefJobTitle').value.trim(),
         industry: document.getElementById('prefIndustry').value.trim(),
-        salesMotion: document.getElementById('prefSalesMotion').value.trim(),
-        communicationStyle: document.getElementById('prefCommunicationStyle').value.trim(),
-        primaryGoal: document.getElementById('prefPrimaryGoal').value.trim(),
-        preferences: preferenceLinesToArray(document.getElementById('prefHelpfulPreferences').value),
-        thingsToAvoid: preferenceLinesToArray(document.getElementById('prefThingsToAvoid').value)
+        communicationStyle: document.getElementById('prefCommunicationStyle').value,
+        primaryGoal: document.getElementById('prefPrimaryGoal').value,
+        preferences: selectValueToArray(document.getElementById('prefHelpfulPreferences').value),
+        thingsToAvoid: selectValueToArray(document.getElementById('prefThingsToAvoid').value)
       }
     };
   }
