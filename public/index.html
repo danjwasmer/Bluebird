@@ -459,22 +459,6 @@
   .input-field:focus { border-color: var(--accent-dim); }
   .input-field::placeholder { color: var(--muted); font-size: 15px; }
 
-  select.input-field {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
-
-  .multi-select {
-    min-height: 140px;
-    padding: 10px 12px;
-  }
-
-  .multi-select option {
-    padding: 8px 10px;
-    border-radius: 6px;
-  }
-
   .prefs-field {
     margin-bottom: 14px;
   }
@@ -494,11 +478,40 @@
     font-size: 12px;
     font-weight: 300;
     color: var(--muted);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   #preferencesModal .input-field {
     margin-bottom: 0;
+  }
+
+  .checkbox-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .checkbox-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+
+  .checkbox-option input[type="checkbox"] {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-dim);
+    flex-shrink: 0;
   }
 
   .primary-btn {
@@ -890,8 +903,8 @@
     font-weight: 300;
     color: var(--text);
     line-height: 1.6;
-    min-height: 28px;
-    max-height: 140px;
+    min-height: 96px;
+    max-height: 260px;
     overflow-y: auto;
     scrollbar-width: none;
   }
@@ -1050,7 +1063,7 @@
     .login-section { padding-left: 20px; padding-right: 20px; }
     .login-card { padding: 28px 20px; }
     .msg-body { font-size: 17px; }
-    textarea { font-size: 16px; }
+    textarea { font-size: 16px; min-height: 110px; max-height: 280px; }
     .site-disclaimer { padding-left: 20px; padding-right: 20px; }
     .page-logo-wrap { padding-left: 20px; padding-right: 20px; }
     .page-logo-wrap img { height: 180px; }
@@ -1083,7 +1096,7 @@
     </div>
 
     <div class="prefs-help" style="margin-bottom:18px;">
-      You can select multiple options in the dropdowns below. On desktop, use Ctrl or Command while clicking. On mobile, tap multiple options in the list.
+      Check all that apply below.
     </div>
 
     <div id="preferencesSavedMsg" style="display:none; margin-bottom:16px; font-family:'Jost',sans-serif; font-size:14px; color:var(--accent-dim);">
@@ -1107,66 +1120,66 @@
     <div class="prefs-field">
       <div class="prefs-label">Communication Style</div>
       <div class="prefs-sub-label">Select all that apply</div>
-      <select id="prefCommunicationStyle" class="input-field multi-select" multiple size="8">
-        <option value="Direct and concise">Direct and concise</option>
-        <option value="Warm and consultative">Warm and consultative</option>
-        <option value="Confident and executive">Confident and executive</option>
-        <option value="Calm and diplomatic">Calm and diplomatic</option>
-        <option value="Persuasive but low-pressure">Persuasive but low-pressure</option>
-        <option value="Friendly and conversational">Friendly and conversational</option>
-        <option value="Analytical and structured">Analytical and structured</option>
-        <option value="Assertive and commercially firm">Assertive and commercially firm</option>
-      </select>
+      <div class="checkbox-group">
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Direct and concise"> <span>Direct and concise</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Warm and consultative"> <span>Warm and consultative</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Confident and executive"> <span>Confident and executive</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Calm and diplomatic"> <span>Calm and diplomatic</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Persuasive but low-pressure"> <span>Persuasive but low-pressure</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Friendly and conversational"> <span>Friendly and conversational</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Analytical and structured"> <span>Analytical and structured</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefCommunicationStyle" value="Assertive and commercially firm"> <span>Assertive and commercially firm</span></label>
+      </div>
     </div>
 
     <div class="prefs-field">
       <div class="prefs-label">Primary Goal</div>
       <div class="prefs-sub-label">Select all that apply</div>
-      <select id="prefPrimaryGoal" class="input-field multi-select" multiple size="8">
-        <option value="Improve discovery conversations">Improve discovery conversations</option>
-        <option value="Write stronger emails and texts">Write stronger emails and texts</option>
-        <option value="Handle objections more effectively">Handle objections more effectively</option>
-        <option value="Negotiate without discounting too quickly">Negotiate without discounting too quickly</option>
-        <option value="De-escalate tense customer situations">De-escalate tense customer situations</option>
-        <option value="Sound more confident and credible">Sound more confident and credible</option>
-        <option value="Ask stronger follow-up questions">Ask stronger follow-up questions</option>
-        <option value="Improve executive-level communication">Improve executive-level communication</option>
-      </select>
+      <div class="checkbox-group">
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Improve discovery conversations"> <span>Improve discovery conversations</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Write stronger emails and texts"> <span>Write stronger emails and texts</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Handle objections more effectively"> <span>Handle objections more effectively</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Negotiate without discounting too quickly"> <span>Negotiate without discounting too quickly</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="De-escalate tense customer situations"> <span>De-escalate tense customer situations</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Sound more confident and credible"> <span>Sound more confident and credible</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Ask stronger follow-up questions"> <span>Ask stronger follow-up questions</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefPrimaryGoal" value="Improve executive-level communication"> <span>Improve executive-level communication</span></label>
+      </div>
     </div>
 
     <div class="prefs-field">
       <div class="prefs-label">Coaching Preferences</div>
       <div class="prefs-sub-label">Select all that apply</div>
-      <select id="prefHelpfulPreferences" class="input-field multi-select" multiple size="8">
-        <option value="Keep responses concise">Keep responses concise</option>
-        <option value="Give me specific wording">Give me specific wording</option>
-        <option value="Prioritize practical next steps">Prioritize practical next steps</option>
-        <option value="Explain the reasoning behind the advice">Explain the reasoning behind the advice</option>
-        <option value="Challenge me directly when my approach is weak">Challenge me directly when my approach is weak</option>
-        <option value="Focus on talk tracks I can use immediately">Focus on talk tracks I can use immediately</option>
-        <option value="Show me stronger rewrite options">Show me stronger rewrite options</option>
-        <option value="Point out risk in my messaging">Point out risk in my messaging</option>
-      </select>
+      <div class="checkbox-group">
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Keep responses concise"> <span>Keep responses concise</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Give me specific wording"> <span>Give me specific wording</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Prioritize practical next steps"> <span>Prioritize practical next steps</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Explain the reasoning behind the advice"> <span>Explain the reasoning behind the advice</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Challenge me directly when my approach is weak"> <span>Challenge me directly when my approach is weak</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Focus on talk tracks I can use immediately"> <span>Focus on talk tracks I can use immediately</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Show me stronger rewrite options"> <span>Show me stronger rewrite options</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefHelpfulPreferences" value="Point out risk in my messaging"> <span>Point out risk in my messaging</span></label>
+      </div>
     </div>
 
     <div class="prefs-field">
       <div class="prefs-label">Things to Avoid</div>
       <div class="prefs-sub-label">Select all that apply</div>
-      <select id="prefThingsToAvoid" class="input-field multi-select" multiple size="8">
-        <option value="Avoid aggressive pressure tactics">Avoid aggressive pressure tactics</option>
-        <option value="Avoid generic sales advice">Avoid generic sales advice</option>
-        <option value="Avoid recommending discounting first">Avoid recommending discounting first</option>
-        <option value="Avoid long-winded explanations">Avoid long-winded explanations</option>
-        <option value="Avoid overly corporate jargon">Avoid overly corporate jargon</option>
-        <option value="Avoid sounding scripted or robotic">Avoid sounding scripted or robotic</option>
-        <option value="Avoid vague filler language">Avoid vague filler language</option>
-        <option value="Avoid weak or passive calls to action">Avoid weak or passive calls to action</option>
-      </select>
+      <div class="checkbox-group">
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid aggressive pressure tactics"> <span>Avoid aggressive pressure tactics</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid generic sales advice"> <span>Avoid generic sales advice</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid recommending discounting first"> <span>Avoid recommending discounting first</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid long-winded explanations"> <span>Avoid long-winded explanations</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid overly corporate jargon"> <span>Avoid overly corporate jargon</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid sounding scripted or robotic"> <span>Avoid sounding scripted or robotic</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid vague filler language"> <span>Avoid vague filler language</span></label>
+        <label class="checkbox-option"><input type="checkbox" name="prefThingsToAvoid" value="Avoid weak or passive calls to action"> <span>Avoid weak or passive calls to action</span></label>
+      </div>
     </div>
 
     <div class="prefs-field">
       <div class="prefs-label">Additional Context</div>
-      <textarea id="prefProfileContext" class="input-field" rows="4" style="resize:vertical; min-height:100px;" placeholder="Anything Bluebird should know about you, your role, your customers, or how you like to work?"></textarea>
+      <textarea id="prefProfileContext" class="input-field" rows="5" style="resize:vertical; min-height:120px;" placeholder="Anything Bluebird should know about you, your role, your customers, or how you like to work?"></textarea>
     </div>
 
     <div class="modal-actions" style="margin-top: 8px;">
@@ -1444,7 +1457,7 @@
 
       <div class="input-area">
         <div class="input-box">
-          <textarea id="userInput" placeholder="Paste the situation, draft email, objection, tense customer message, or call notes…" rows="1"></textarea>
+          <textarea id="userInput" placeholder="Paste the situation, draft email, objection, tense customer message, or call notes…" rows="4"></textarea>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
         </div>
         <div class="disclaimer">Bluebird Sales is a communication coach, not a replacement for manager review, legal review, or company policy.</div>
@@ -1519,29 +1532,27 @@
     });
   }
 
-  function selectedOptionsToArray(selectId) {
-    const el = document.getElementById(selectId);
-    return Array.from(el.selectedOptions)
-      .map(option => option.value)
+  function checkedValues(name) {
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+      .map(el => el.value)
       .filter(Boolean);
   }
 
-  function setMultiSelectValues(selectId, values) {
-    const el = document.getElementById(selectId);
-    const selectedValues = Array.isArray(values)
+  function setCheckedValues(name, values) {
+    const normalized = Array.isArray(values)
       ? values
       : String(values || '')
           .split(MULTI_VALUE_DELIMITER)
           .map(v => v.trim())
           .filter(Boolean);
 
-    Array.from(el.options).forEach(option => {
-      option.selected = selectedValues.includes(option.value);
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+      el.checked = normalized.includes(el.value);
     });
   }
 
-  function joinMultiValuesForStringField(selectId) {
-    return selectedOptionsToArray(selectId).join(MULTI_VALUE_DELIMITER);
+  function joinCheckedValues(name) {
+    return checkedValues(name).join(MULTI_VALUE_DELIMITER);
   }
 
   function populatePreferencesForm(data = {}) {
@@ -1549,10 +1560,10 @@
 
     document.getElementById('prefJobTitle').value = prefs.jobTitle || '';
     document.getElementById('prefIndustry').value = prefs.industry || '';
-    setMultiSelectValues('prefCommunicationStyle', prefs.communicationStyle);
-    setMultiSelectValues('prefPrimaryGoal', prefs.primaryGoal);
-    setMultiSelectValues('prefHelpfulPreferences', prefs.preferences);
-    setMultiSelectValues('prefThingsToAvoid', prefs.thingsToAvoid);
+    setCheckedValues('prefCommunicationStyle', prefs.communicationStyle);
+    setCheckedValues('prefPrimaryGoal', prefs.primaryGoal);
+    setCheckedValues('prefHelpfulPreferences', prefs.preferences);
+    setCheckedValues('prefThingsToAvoid', prefs.thingsToAvoid);
     document.getElementById('prefProfileContext').value = data.profileContext || '';
   }
 
@@ -1562,10 +1573,10 @@
       preferences: {
         jobTitle: document.getElementById('prefJobTitle').value.trim(),
         industry: document.getElementById('prefIndustry').value.trim(),
-        communicationStyle: joinMultiValuesForStringField('prefCommunicationStyle'),
-        primaryGoal: joinMultiValuesForStringField('prefPrimaryGoal'),
-        preferences: selectedOptionsToArray('prefHelpfulPreferences'),
-        thingsToAvoid: selectedOptionsToArray('prefThingsToAvoid')
+        communicationStyle: joinCheckedValues('prefCommunicationStyle'),
+        primaryGoal: joinCheckedValues('prefPrimaryGoal'),
+        preferences: checkedValues('prefHelpfulPreferences'),
+        thingsToAvoid: checkedValues('prefThingsToAvoid')
       }
     };
   }
@@ -2107,7 +2118,7 @@
 
   textarea.addEventListener('input', function() {
     this.style.height = 'auto';
-    this.style.height = Math.min(this.scrollHeight, 140) + 'px';
+    this.style.height = Math.min(this.scrollHeight, 260) + 'px';
   });
 
   textarea.addEventListener('keydown', function(e) {
